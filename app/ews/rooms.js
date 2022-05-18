@@ -1,153 +1,152 @@
-module.exports = function (callback) {
+module.exports = function(callback) {
+	// modules -------------------------------------------------------------------
+	var ews = require('ews-javascript-api');
+	var auth = require('../../config/auth.js');
+	var blacklist = require('../../config/room-blacklist.js');
 
-  // modules -------------------------------------------------------------------
-  var ews = require("ews-javascript-api");
-  var auth = require("../../config/auth.js");
-  var blacklist = require("../../config/room-blacklist.js");
+	// ews -----------------------------------------------------------------------
+	// - TODO: Make the exchangeserver-version configurable
+	var exch = new ews.ExchangeService(ews.ExchangeVersion.Exchange2016);
+	exch.Credentials = new ews.ExchangeCredentials(auth.exchange.username, auth.exchange.password);
+	exch.Url = new ews.Uri(auth.exchange.uri);
 
-  // ews -----------------------------------------------------------------------
-  var exch = new ews.ExchangeService(ews.ExchangeVersion.Exchange2016);
-  exch.Credentials = new ews.ExchangeCredentials(auth.exchange.username, auth.exchange.password);
-  exch.Url = new ews.Uri(auth.exchange.uri);
+	// promise: get all room lists
+	var getListOfRooms = function() {
+		var promise = new Promise(function(resolve, reject) {
+			exch.GetRoomLists().then(
+				(lists) => {
+					var roomLists = lists.items;
+					resolve(roomLists);
+				},
+				(err) => {
+					callback(err, null);
+				}
+			);
+		});
+		return promise;
+	};
 
+	// promise: get all rooms in room lists
+	var getRoomsInLists = function(roomLists) {
+		var promise = new Promise(function(resolve, reject) {
+			var roomAddresses = [];
+			var counter = 0;
 
-  // promise: get all room lists
-  var getListOfRooms = function () {
-    var promise = new Promise(function (resolve, reject) {
-      exch.GetRoomLists().then((lists) => {
-        var roomLists = lists.items;
-        resolve(roomLists);
-      }, (err) => {
-        callback(err, null);
-      });
-    })
-    return promise;
-  };
+			roomLists.forEach(function(item, i, array) {
+				exch.GetRooms(new ews.Mailbox(item.Address)).then((rooms) => {
+					rooms.forEach(function(roomItem, roomIndex, roomsArray) {
+						// use either email var or roomItem.Address - depending on your use case
+						let inBlacklist = isRoomInBlacklist(roomItem.Address);
 
-  // promise: get all rooms in room lists
-  var getRoomsInLists = function (roomLists) {
-    var promise = new Promise(function (resolve, reject) {
-      var roomAddresses = [];
-      var counter = 0;
+						// if not in blacklist, proceed as normal; otherwise, skip
+						if (!inBlacklist) {
+							let room = {};
 
-      roomLists.forEach(function (item, i, array) {
-        exch.GetRooms(new ews.Mailbox(item.Address)).then((rooms) => {
-          rooms.forEach(function (roomItem, roomIndex, roomsArray) {
-            // use either email var or roomItem.Address - depending on your use case
-            let inBlacklist = isRoomInBlacklist(roomItem.Address);
+							// if the email addresses != your corporate domain,
+							// replace email domain with domain
+							let email = roomItem.Address;
+							email = email.substring(0, email.indexOf('@'));
+							email = email + '@' + auth.domain;
 
-            // if not in blacklist, proceed as normal; otherwise, skip
-            if (!inBlacklist) {
-              let room = {};
+							let roomAlias = roomItem.Name.toLowerCase().replace(/\s+/g, '-');
 
-              // if the email addresses != your corporate domain,
-              // replace email domain with domain
-              let email = roomItem.Address;
-              email = email.substring(0, email.indexOf('@'));
-              email = email + '@' + auth.domain;
+							room.Roomlist = item.Name;
+							room.Name = roomItem.Name;
+							room.RoomAlias = roomAlias;
+							room.Email = email;
+							roomAddresses.push(room);
+						}
+					});
+					counter++;
 
-              let roomAlias = roomItem.Name.toLowerCase().replace(/\s+/g, "-");
+					if (counter === array.length) {
+						resolve(roomAddresses);
+					}
+				});
+			});
+		});
+		return promise;
+	};
 
-              room.Roomlist = item.Name;
-              room.Name = roomItem.Name;
-              room.RoomAlias = roomAlias;
-              room.Email = email;
-              roomAddresses.push(room);
-            }
-          });
-          counter++;
+	var fillRoomData = function(context, room, appointments = [], option = {}) {
+		room.Appointments = [];
+		appointments.forEach(function(appt, index) {
+			// get start time from appointment
+			var start = processTime(appt.Start.momentDate),
+				end = processTime(appt.End.momentDate),
+				now = Date.now();
 
-          if (counter === array.length) {
-            resolve(roomAddresses);
-          }
-        })
-      });
+			room.Busy = index === 0 ? start < now && now < end : room.Busy;
 
-    });
-    return promise;
-  };
+			let isAppointmentPrivate = appt.Sensitivity === 'Normal' ? false : true;
 
-  var fillRoomData = function (context, room, appointments = [], option = {}) {
-    room.Appointments = [];
-    appointments.forEach(function(appt, index) {
-      // get start time from appointment
-      var start = processTime(appt.Start.momentDate),
-          end = processTime(appt.End.momentDate),
-          now = Date.now();
+			let subject = isAppointmentPrivate ? 'Private' : appt.Subject;
 
-      room.Busy = index === 0
-        ? start < now && now < end
-        : room.Busy;
+			room.Appointments.push({
+				Subject: subject,
+				Organizer: appt.Organizer.Name,
+				Start: start,
+				End: end,
+				Private: isAppointmentPrivate
+			});
+		});
 
-      let isAppointmentPrivate = appt.Sensitivity === 'Normal' ? false : true;
+		if (option.errorMessage) {
+			room.ErrorMessage = option.errorMessage;
+		}
 
-      let subject = isAppointmentPrivate ? 'Private' : appt.Subject;
+		context.itemsProcessed++;
 
-      room.Appointments.push({
-        "Subject" : subject,
-        "Organizer" : appt.Organizer.Name,
-        "Start" : start,
-        "End"   : end,
-        "Private" : isAppointmentPrivate
-      });
-    });
+		if (context.itemsProcessed === context.roomAddresses.length) {
+			context.roomAddresses.sort((a, b) => a.Name.toLowerCase().localeCompare(b.Name.toLowerCase()));
+			context.callback(context.roomAddresses);
+		}
+	};
 
-    if (option.errorMessage) {
-      room.ErrorMessage = option.errorMessage;
-    }
+	// promise: get current or upcoming appointments for each room
+	var getAppointmentsForRooms = function(roomAddresses) {
+		var promise = new Promise(function(resolve, reject) {
+			var context = {
+				callback: resolve,
+				itemsProcessed: 0,
+				roomAddresses
+			};
 
-    context.itemsProcessed++;
+			roomAddresses.forEach(function(room, index, array) {
+				var calendarFolderId = new ews.FolderId(ews.WellKnownFolderName.Calendar, new ews.Mailbox(room.Email));
+				var view = new ews.CalendarView(ews.DateTime.Now, ews.DateTime.Now.AddDays(10), 6);
+				exch.FindAppointments(calendarFolderId, view).then(
+					(response) => {
+						fillRoomData(context, room, response.Items);
+					},
+					(error) => {
+						// handle the error here
+						// callback(error, null);
+						fillRoomData(context, room, undefined, { errorMessage: error.response.errorMessage });
+					}
+				);
+			});
+		});
+		return promise;
+	};
 
-    if (context.itemsProcessed === context.roomAddresses.length) {
-      context.roomAddresses.sort((a, b) => a.Name.toLowerCase().localeCompare(b.Name.toLowerCase()));
-      context.callback(context.roomAddresses);
-    }
-  };
+	// check if room is in blacklist
+	function isRoomInBlacklist(email) {
+		return blacklist.roomEmails.includes(email);
+	}
 
-  // promise: get current or upcoming appointments for each room
-  var getAppointmentsForRooms = function (roomAddresses) {
-    var promise = new Promise(function (resolve, reject) {
-      var context = {
-        callback: resolve,
-        itemsProcessed: 0,
-        roomAddresses
-      };
+	// do all of the process for the appointment times
+	function processTime(appointmentTime) {
+		var time = JSON.stringify(appointmentTime);
+		time = time.replace(/"/g, '');
+		var time = new Date(time);
+		var time = time.getTime();
 
-      roomAddresses.forEach(function(room, index, array){
-        var calendarFolderId = new ews.FolderId(ews.WellKnownFolderName.Calendar, new ews.Mailbox(room.Email));
-        var view = new ews.CalendarView(ews.DateTime.Now, new ews.DateTime(ews.DateTime.Now.TotalMilliSeconds + ews.TimeSpan.FromHours(240).asMilliseconds()), 6);
-        exch.FindAppointments(calendarFolderId, view).then((response) => {
-          fillRoomData(context, room, response.Items);
-        }, (error) => {
-          // handle the error here
-          // callback(error, null);
-          fillRoomData(context, room, undefined, { errorMessage: error.response.errorMessage });
-        });
-      });
-    });
-    return promise;
-  };
+		return time;
+	}
 
-  // check if room is in blacklist
-  function isRoomInBlacklist(email) {
-    return blacklist.roomEmails.includes(email);
-  }
-
-  // do all of the process for the appointment times
-  function processTime(appointmentTime) {
-    var time = JSON.stringify(appointmentTime);
-    time = time.replace(/"/g,"");
-    var time = new Date(time);
-    var time = time.getTime();
-
-    return time;
-  }
-
-  // perform promise chain to get rooms
-  getListOfRooms()
-  .then(getRoomsInLists)
-  .then(getAppointmentsForRooms)
-  .then(function(rooms){
-      callback(null, rooms);
-  });
+	// perform promise chain to get rooms
+	getListOfRooms().then(getRoomsInLists).then(getAppointmentsForRooms).then(function(rooms) {
+		callback(null, rooms);
+	});
 };

@@ -15,9 +15,9 @@ require('./app/routes.js')(app);
 // launch ======================================================================
 const port = process.env.PORT || 8080;
 
-var theserver = app.listen(port, function(){
+var theserver = app.listen(port, function() {
 	// call controller functions -------------------------------------------------
-	var io = require('socket.io').listen(theserver);
+	const io = require('socket.io')(theserver);
 
 	// controller if using room lists
 	var controller = require('./app/socket-controller.js')(io);
