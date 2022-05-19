@@ -1,13 +1,21 @@
 // server.js
 
 // set up ======================================================================
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
+const auth = require('./config/auth');
+const msal = require('@azure/msal-node');
 
 // configuration ===============================================================
 // use public folder for js, css, imgs, etc
 app.use(express.static('static'));
 app.use(express.static(`${__dirname}/ui-react/build`));
+
+// Read the .env-file
+require('dotenv').config();
+
+// Create msal application object
+app.locals.msalClient = new msal.ConfidentialClientApplication(auth.msalConfig);
 
 // routes ======================================================================
 require('./app/routes.js')(app);

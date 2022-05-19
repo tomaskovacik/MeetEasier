@@ -1,0 +1,146 @@
+var graph = require('./graph');
+var blacklist = require('../../config/room-blacklist.js');
+
+module.exports = function(callback, req) {
+	// promise: get all room lists
+	var getListOfRooms = function() {
+		var promise = new Promise(function(resolve, reject) {
+			graph
+				.getRoomList(req.app.locals.msalClient)
+				.then(
+					(lists) => {
+						var roomLists = lists.value;
+						resolve(roomLists);
+					},
+					(err) => {
+						callback(err, null);
+					}
+				)
+				.catch((err) => callback(err, null));
+		});
+
+		return promise;
+	};
+
+	// promise: get all rooms in room lists
+	var getRoomsInLists = function(roomLists) {
+		var promise = new Promise(function(resolve, reject) {
+			var roomAddresses = [];
+			var counter = 0;
+
+			roomLists.forEach(function(item, i, array) {
+				graph.getRooms(req.app.locals.msalClient, item.emailAddress).then((rooms) => {
+					rooms.value.forEach(function(roomItem, roomIndex, roomsArray) {
+						// use either email var or roomItem.Address - depending on your use case
+						let inBlacklist = isRoomInBlacklist(roomItem.emailAddress);
+
+						// if not in blacklist, proceed as normal; otherwise, skip
+						if (!inBlacklist) {
+							let room = {};
+
+							// if the email addresses != your corporate domain,
+							// replace email domain with domain
+							let email = roomItem.emailAddress;
+							/* email = email.substring(0, email.indexOf('@'));
+							email = email + '@' + auth.domain; */
+
+							let roomAlias = roomItem.displayName.toLowerCase().replace(/\s+/g, '-');
+
+							room.Roomlist = item.displayName;
+							room.Name = roomItem.displayName;
+							room.RoomAlias = roomAlias;
+							room.Email = email;
+							roomAddresses.push(room);
+						}
+					});
+					counter++;
+
+					if (counter === array.length) {
+						resolve(roomAddresses);
+					}
+				});
+			});
+		});
+		return promise;
+	};
+
+	var fillRoomData = function(context, room, appointments = [], option = {}) {
+		room.Appointments = [];
+		appointments.forEach(function(appt, index) {
+			// get start time from appointment
+			var start = processTime(appt.start.dateTime),
+				end = processTime(appt.end.dateTime),
+				now = Date.now();
+
+			room.Busy = index === 0 ? start < now && now < end : room.Busy;
+
+			let isAppointmentPrivate = appt.sensitivity === 'Normal' ? false : true;
+
+			let subject = isAppointmentPrivate ? 'Private' : appt.subject;
+
+			room.Appointments.push({
+				Subject: subject,
+				Organizer: appt.organizer.name,
+				Start: start,
+				End: end,
+				Private: isAppointmentPrivate
+			});
+		});
+
+		if (option.errorMessage) {
+			room.ErrorMessage = option.errorMessage;
+		}
+
+		context.itemsProcessed++;
+
+		if (context.itemsProcessed === context.roomAddresses.length) {
+			context.roomAddresses.sort((a, b) => a.Name.toLowerCase().localeCompare(b.Name.toLowerCase()));
+			context.callback(context.roomAddresses);
+		}
+	};
+
+	// promise: get current or upcoming appointments for each room
+	var getAppointmentsForRooms = function(roomAddresses) {
+		var promise = new Promise(function(resolve, reject) {
+			var context = {
+				callback: resolve,
+				itemsProcessed: 0,
+				roomAddresses
+			};
+
+			roomAddresses.forEach(function(room, index, array) {
+				/* 				var calendarFolderId = new ews.FolderId(ews.WellKnownFolderName.Calendar, new ews.Mailbox(room.Email));
+				var view = new ews.CalendarView(ews.DateTime.Now, ews.DateTime.Now.AddDays(10), 6); */
+				graph.getCalendarView(req.app.locals.msalClient, room.Email).then(
+					(response) => {
+						fillRoomData(context, room, response.value);
+					},
+					(error) => {
+						// handle the error here
+						// callback(error, null);
+						fillRoomData(context, room, undefined, { errorMessage: error });
+					}
+				);
+			});
+		});
+		return promise;
+	};
+
+	// check if room is in blacklist
+	function isRoomInBlacklist(email) {
+		return blacklist.roomEmails.includes(email);
+	}
+
+	// do all of the process for the appointment times
+	function processTime(appointmentTime) {
+		var time = JSON.stringify(appointmentTime);
+		time = time.replace(/"/g, '');
+		var time = new Date(time);
+		var time = time.getTime();
+
+		return time;
+	}
+
+	// perform promise chain to get rooms
+	getListOfRooms().then(getRoomsInLists).then(getAppointmentsForRooms).then((rooms) => callback(null, rooms));
+};
