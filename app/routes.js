@@ -1,96 +1,70 @@
-const graph = require('./msgraph/graph');
+const config = require("../config/config");
 
-module.exports = function(app) {
-	var path = require('path');
+module.exports = function (app) {
+  var path = require("path");
 
-	// api routes ================================================================
-	// returns an array of room objects
-	app.get('/api/rooms3', function(req, res) {
-		var ews = require('./ews/rooms.js');
+  // api routes ================================================================
+  // returns an array of room objects
+  app.get("/api/rooms", function (req, res) {
+    let api;
+    if (config.calendarSearch.useGraphAPI === true) {
+      api = require("./msgraph/rooms.js");
+    } else {
+      api = require("./ews/rooms.js");
+    }
 
-		ews(function(err, rooms) {
-			if (err) {
-				if (err.responseCode === 127) {
-					res.json({
-						error:
-							'Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.'
-					});
-				} else {
-					res.json({ error: 'Hmm, there seems to be a weird issue occuring.' });
-				}
-			} else {
-				res.json(rooms);
-			}
-		});
-	});
+    api(function (err, rooms) {
+      if (err) {
+        if (err.responseCode === 127) {
+          res.json({
+            error:
+              "Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.",
+          });
+        } else {
+          res.json({
+            error: "Hmm, there seems to be a weird issue occuring.",
+          });
+        }
+      } else {
+        res.json(rooms);
+      }
+    }, req);
+  });
 
-	// returns an array of room objects
-	app.get('/api/rooms', function(req, res) {
-		var msgraph = require('./msgraph/rooms.js');
+  // returns an array of roomlist objects
+  app.get("/api/roomlists", function (req, res) {
+    let api;
+    if (config.calendarSearch.useGraphAPI === true) {
+      api = require("./msgraph/rooms.js");
+    } else {
+      api = require("./ews/rooms.js");
+    }
 
-		msgraph(function(err, rooms) {
-			if (err) {
-				if (err.responseCode === 127) {
-					res.json({
-						error:
-							'Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.'
-					});
-				} else {
-					res.json({ error: 'Hmm, there seems to be a weird issue occuring.' });
-				}
-			} else {
-				res.json(rooms);
-			}
-		}, req);
-	});
+    api(function (err, roomlists) {
+      if (err) {
+        if (err.responseCode === 127) {
+          res.json({
+            error:
+              "Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.",
+          });
+        } else {
+          res.json({
+            error: "Hmm, there seems to be a weird issue occuring.",
+          });
+        }
+      } else {
+        res.json(roomlists);
+      }
+    }, req);
+  });
 
-	// returns an array of roomlist objects
-	app.get('/api/roomlists3', function(req, res) {
-		var ews = require('./ews/roomlists.js');
+  // heartbeat-service to check if server is alive
+  app.get("/api/heartbeat", function (req, res) {
+    res.json({ status: "OK" });
+  });
 
-		ews(function(err, roomlists) {
-			if (err) {
-				if (err.responseCode === 127) {
-					res.json({
-						error:
-							'Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.'
-					});
-				} else {
-					res.json({ error: 'Hmm, there seems to be a weird issue occuring.' });
-				}
-			} else {
-				res.json(roomlists);
-			}
-		});
-	});
-
-	// returns an array of roomlist objects
-	app.get('/api/roomlists', function(req, res) {
-		var msgraph = require('./msgraph/roomlists.js');
-
-		msgraph(function(err, roomlists) {
-			if (err) {
-				if (err.responseCode === 127) {
-					res.json({
-						error:
-							'Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.'
-					});
-				} else {
-					res.json({ error: 'Hmm, there seems to be a weird issue occuring.' });
-				}
-			} else {
-				res.json(roomlists);
-			}
-		}, req);
-	});
-
-	// heartbeat-service to check if server is alive
-	app.get('/api/heartbeat', function(req, res) {
-		res.json({ status: 'OK' });
-	});
-
-	// redirects everything else to our react app
-	app.get('*', function(req, res) {
-		res.sendFile(path.join(__dirname, '../ui-react/build/', 'index.html'));
-	});
+  // redirects everything else to our react app
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../ui-react/build/", "index.html"));
+  });
 };
