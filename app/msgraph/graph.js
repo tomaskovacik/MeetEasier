@@ -1,6 +1,13 @@
 var graph = require('@microsoft/microsoft-graph-client');
 require('isomorphic-fetch');
 
+// TODO: Move this somewhere else?
+Date.prototype.addDays = function(days) {
+	var date = new Date(this.valueOf());
+	date.setDate(date.getDate() + days);
+	return date;
+};
+
 module.exports = {
 	getRoomList: async (msalClient) => {
 		const client = getAuthenticatedClient(msalClient);
@@ -19,11 +26,15 @@ module.exports = {
 	getCalendarView: async (msalClient, email) => {
 		const client = getAuthenticatedClient(msalClient);
 
-		const start_datetime = '2022-05-19T10:00:00-02:00';
-		const end_datetime = '2022-05-29T10:00:00-02:00';
+		const start_datetime = new Date();
+
+		// TODO: Make end_datetime configurable
+		const end_datetime = start_datetime.addDays(10);
 
 		const events = await client
-			.api(`/users/${email}/calendar/calendarView?startDateTime=${start_datetime}&endDateTime=${end_datetime}`)
+			.api(
+				`/users/${email}/calendar/calendarView?startDateTime=${start_datetime.toISOString()}&endDateTime=${end_datetime.toISOString()}`
+			)
 			.get();
 		return events;
 	}
