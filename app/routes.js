@@ -38,9 +38,9 @@ module.exports = function(app) {
 	app.get('/api/roomlists', function(req, res) {
 		let api;
 		if (config.calendarSearch.useGraphAPI === 'true') {
-			api = require('./msgraph/rooms.js');
+			api = require('./msgraph/roomlists.js');
 		} else {
-			api = require('./ews/rooms.js');
+			api = require('./ews/roomlists.js');
 		}
 
 		api(function(err, roomlists) {
