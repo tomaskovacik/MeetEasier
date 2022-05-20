@@ -1,33 +1,36 @@
-const config = require("../config/config");
+const msal = require('@azure/msal-node');
+const config = require('../config/config');
 
-module.exports = function (io) {
-  var isRunning = false;
+const msalClient = new msal.ConfidentialClientApplication(config.msalConfig);
 
-  // Check and update rooms every 60 seconds -----------------------------------
-  io.of("/").on("connection", function (socket) {
-    if (!isRunning) {
-      (function callAPI() {
-        let api;
-        if (config.calendarSearch.useGraphAPI === true) {
-          api = require("./msgraph/rooms.js");
-        } else {
-          api = require("./ews/rooms.js");
-        }
+module.exports = function(io) {
+	var isRunning = false;
 
-        api(function (err, result) {
-          if (result) {
-            if (err) return console.log(err);
-            // send data to page
-            io.of("/").emit("updatedRooms", result);
-          }
+	// Check and update rooms every 60 seconds -----------------------------------
+	io.of('/').on('connection', function(socket) {
+		if (!isRunning) {
+			(function callAPI() {
+				let api;
+				if (config.calendarSearch.useGraphAPI === 'true') {
+					api = require('./msgraph/rooms.js');
+				} else {
+					api = require('./ews/rooms.js');
+				}
 
-          io.of("/").emit("controllerDone", "done");
-        });
+				api(function(err, result) {
+					if (result) {
+						if (err) return console.log(err);
+						// send data to page
+						io.of('/').emit('updatedRooms', result);
+					}
 
-        setTimeout(callAPI, 60000);
-      })();
-    }
+					io.of('/').emit('controllerDone', 'done');
+				}, msalClient);
 
-    isRunning = true;
-  });
+				setTimeout(callAPI, 60000);
+			})();
+		}
+
+		isRunning = true;
+	});
 };

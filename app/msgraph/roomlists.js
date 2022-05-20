@@ -1,8 +1,8 @@
 var graph = require('./graph');
 
-module.exports = function(callback, req) {
+module.exports = function(callback, msalClient) {
 	graph
-		.getRoomList(req.app.locals.msalClient)
+		.getRoomList(msalClient)
 		.then(
 			(lists) => {
 				var roomLists = [];
