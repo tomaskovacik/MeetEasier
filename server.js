@@ -28,7 +28,7 @@ const port = process.env.PORT || 8080;
 
 const theserver = app.listen(port, function () {
   // call controller functions -------------------------------------------------
-  const io = require("socket.io")(theserver);
+  const io = require("socket.io")(theserver, { allowEIO3: true });
 
   // controller if using room lists
   const controller = require("./app/socket-controller.js")(io);
