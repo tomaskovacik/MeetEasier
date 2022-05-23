@@ -13,14 +13,24 @@ module.exports = {
 	getRoomList: async (msalClient) => {
 		const client = getAuthenticatedClient(msalClient);
 
-		const roomlist = await client.api('/places/microsoft.graph.roomlist').get();
+		const roomlist = await client
+			.api('/places/microsoft.graph.roomlist')
+			.select('displayName, emailAddress')
+			.orderby('displayName')
+			.top(parseInt(config.calendarSearch.maxRoomLists))
+			.get();
 		return roomlist;
 	},
 
 	getRooms: async (msalClient, email) => {
 		const client = getAuthenticatedClient(msalClient);
 
-		const rooms = await client.api(`/places/${email}/microsoft.graph.roomlist/rooms`).get();
+		const rooms = await client
+			.api(`/places/${email}/microsoft.graph.roomlist/rooms`)
+			.select('displayName,emailAddress')
+			.orderby('displayName')
+			.top(parseInt(config.calendarSearch.maxRooms))
+			.get();
 		return rooms;
 	},
 
@@ -31,9 +41,10 @@ module.exports = {
 		const end_datetime = start_datetime.addDays(parseInt(config.calendarSearch.maxDays));
 
 		const events = await client
-			.api(
-				`/users/${email}/calendar/calendarView?startDateTime=${start_datetime.toISOString()}&endDateTime=${end_datetime.toISOString()}`
-			)
+			.api(`/users/${email}/calendar/calendarView`)
+			.query(`startDateTime=${start_datetime.toISOString()}&endDateTime=${end_datetime.toISOString()}`)
+			.select('organizer,subject,start,end,sensitivity')
+			.orderby('Start/DateTime')
 			.top(parseInt(config.calendarSearch.maxItems))
 			.get();
 		return events;
