@@ -6,14 +6,14 @@ const app = express();
 
 // configuration ===============================================================
 // use public folder for js, css, imgs, etc
-app.use(express.static('static'));
+app.use(express.static("static"));
 app.use(express.static(`${__dirname}/ui-react/build`));
 
 // Read the .env-file
 require('dotenv').config();
 
 // routes ======================================================================
-require('./app/routes.js')(app);
+require("./app/routes.js")(app);
 
 // launch ======================================================================
 const port = process.env.PORT || 8080;
