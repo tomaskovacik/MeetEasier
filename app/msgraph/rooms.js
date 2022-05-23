@@ -126,13 +126,13 @@ module.exports = function(callback, msalClient) {
 	const isRoomInBlacklist = (email) => blacklist.roomEmails.includes(email);
 
 	// do all of the process for the appointment times
+	// process the time from UTC to localtime
 	const processTime = (appointmentTime) => {
-		let time = JSON.stringify(appointmentTime);
-		time = time.replace(/"/g, '');
-		time = new Date(time);
-		time = time.getTime();
+		const date = new Date(appointmentTime);
+		const localOffset = -1 * date.getTimezoneOffset() * 60000;
+		const timestamp = date.getTime() + localOffset;
 
-		return time;
+		return timestamp;
 	};
 
 	// perform promise chain to get rooms
