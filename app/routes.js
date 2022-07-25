@@ -62,18 +62,12 @@ module.exports = function(app) {
 	});
 
 	// heartbeat-service to check if server is alive
-<<<<<<< HEAD
  	app.get('/api/heartbeat', function(req, res) {
     	res.json({ status: 'OK' });
   	});
 	
 	// books a room
 	app.get('/api/roombooking', function(req, res){
-=======
-	app.get('/api/heartbeat', function(req, res) {
-		res.json({ status: 'OK' });
-	});
->>>>>>> 72c9bdbbebaed5a54a56a8b9f92d8d7ffbdb9193
 
 		console.log("Route Room Booking");
 		//console.log(req);
