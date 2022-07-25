@@ -1,6 +1,6 @@
 # MeetEasier - Custom Fork for Raspberry Pi Official Touchscreen
 
-
+AzureAD permissions: MSAL.md
 
 ## Description
 This is a customised fork of "MeetEasier" https://github.com/danxfisher/MeetEasier.
