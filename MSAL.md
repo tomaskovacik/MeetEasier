@@ -10,19 +10,9 @@ API permitions-> add permission ->  microsoft graph ->
 
 Calendars.Read
 	
-Calendars.Read.Shared
-	
-Calendars.ReadWrite
-	
 Place.Read.All
-	
-Place.ReadWrite.All
-	
-User.Read.All
-	
-User.ReadBasic.All
 
-for next dev step -> add booking on site, write permission somewhere will be needed
+for next dev step -> add booking on site, write permission somewhere will be needed, probably ...
 
 
 t.	
