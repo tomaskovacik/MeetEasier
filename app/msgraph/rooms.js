@@ -74,7 +74,7 @@ module.exports = function(callback, msalClient) {
 
 			room.Busy = index === 0 ? start < now && now < end : room.Busy;
 
-			let isAppointmentPrivate = appt.sensitivity === 'Normal' ? false : true;
+			let isAppointmentPrivate = appt.sensitivity === 'normal' ? false : true;
 			let subject = isAppointmentPrivate ? 'Private' : appt.subject;
 
 			room.Appointments.push({
