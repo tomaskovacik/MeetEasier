@@ -120,13 +120,10 @@ class FFButton extends React.Component {
 }
 const Details = ({room, details}) => (
   <div id="single-room__details">
-    { details.appointmentExists &&
+    { room.Busy && details.appointmentExists &&
       <div id="single-room__meeting-title">
-        <span id="single-room__next-up">
-          {details.nextUp}
-        </span>
         <span id="single-room__meeting-subject">
-          {room.Appointments[0].Subject}
+	    {room.Busy ? "": room.Appointments[0].Subject}
         </span>
       </div>
     }
@@ -135,10 +132,10 @@ const Details = ({room, details}) => (
 
 const Time = ({room, details}) => (
   <div id="single-room__meeting-time">
-    { details.appointmentExists &&
-      new Date(parseInt(room.Appointments[0].Start, 10)).toLocaleTimeString([], {weekday: 'short', hour: '2-digit', minute: '2-digit'})
-      + ' - ' + 
-      new Date(parseInt(room.Appointments[0].End, 10)).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+    { room.Busy && details.appointmentExists &&
+        new Date(parseInt(room.Appointments[0].Start, 10)).getHours() + ':' + (new Date(parseInt(room.Appointments[0].Start, 10)).getMinutes() <= 9 ? '0' : '') + new Date(parseInt(room.Appointments[0].Start, 10)).getMinutes()
+        + ' - ' +
+        new Date(parseInt(room.Appointments[0].End, 10)).getHours() + ':' + (new Date(parseInt(room.Appointments[0].End, 10)).getMinutes() <= 9 ? '0' : '') + new Date(parseInt(room.Appointments[0].End, 10)).getMinutes()
     }
   </div>
 );
@@ -146,7 +143,7 @@ const Time = ({room, details}) => (
 const Organizer = ({room, details}) => {
   return(
     <div id="single-room__meeting-organizer">
-      {details.appointmentExists &&
+      { room.Busy && details.appointmentExists &&
         room.Appointments[0].Organizer
       }
     </div>
@@ -220,8 +217,8 @@ function ButtonControl(props){
       if (timeDifference > 120){
         let DropdownContent = [15, 30, 60, 120]
         return (
-        <div> <h4> Extend/Book after this meeting Now: </h4>
-          <table class="buttonContainer"><tr>
+        <div id="menu">
+          <table id="buttonContainer"><tr>
           <td class="td-btn"><FFButton ButtonTitle="Book After" DropdownContent={DropdownContent} BtnFunc="BookAfter" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="Extend" DropdownContent={DropdownContent} BtnFunc="ExtendBooking" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
@@ -231,19 +228,19 @@ function ButtonControl(props){
       else if (timeDifference > 90){
         let DropdownContent = [15, 30, 60, 90]
         return (
-          <div> <h4> Extend/Book after this meeting Now: </h4>
-          <table class="buttonContainer"><tr>
+          <div id="menu">
+          <table id="buttonContainer"><tr>
           <td class="td-btn"><FFButton ButtonTitle="Book After" DropdownContent={DropdownContent} BtnFunc="BookAfter" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="Extend" DropdownContent={DropdownContent} BtnFunc="ExtendBooking" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
-          <td class="td-btn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
+          <td class="td-tn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
         </tr></table></div>
         );
       }
       else if (timeDifference > 60){
         let DropdownContent = [15, 30, 45, 60]
         return (
-          <div> <h4> Extend/Book after this meeting Now: </h4>
-          <table class="buttonContainer"><tr>
+          <div id="menu">
+          <table id="buttonContainer"><tr>
           <td class="td-btn"><FFButton ButtonTitle="Book After" DropdownContent={DropdownContent} BtnFunc="BookAfter" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="Extend" DropdownContent={DropdownContent} BtnFunc="ExtendBooking" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
@@ -253,8 +250,8 @@ function ButtonControl(props){
       else if (timeDifference > 45){
         let DropdownContent = [15, 30, 45]
         return (
-          <div> <h4> Extend/Book after this meeting Now: </h4>
-          <table class="buttonContainer"><tr>
+          <div id="menu">
+          <table id="buttonContainer"><tr>
           <td class="td-btn"><FFButton ButtonTitle="Book After" DropdownContent={DropdownContent} BtnFunc="BookAfter" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="Extend" DropdownContent={DropdownContent} BtnFunc="ExtendBooking" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
@@ -264,8 +261,8 @@ function ButtonControl(props){
       else if (timeDifference > 30){
         let DropdownContent = [15, 30]
         return (
-          <div> <h4> Extend/Book after this meeting Now: </h4>
-          <table class="buttonContainer"><tr>
+          <div id="menu">
+          <table id="buttonContainer"><tr>
           <td class="td-btn"><FFButton ButtonTitle="Book After" DropdownContent={DropdownContent} BtnFunc="BookAfter" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="Extend" DropdownContent={DropdownContent} BtnFunc="ExtendBooking" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
@@ -275,8 +272,8 @@ function ButtonControl(props){
       else if (timeDifference > 15){
         let DropdownContent = [15, timeDifference]
         return (
-          <div> <h4> Extend/Book after this meeting Now: </h4>
-          <table class="buttonContainer"><tr>
+          <div id="menu">
+          <table id="buttonContainer"><tr>
           <td class="td-btn"><FFButton ButtonTitle="Book After" DropdownContent={DropdownContent} BtnFunc="BookAfter" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="Extend" DropdownContent={DropdownContent} BtnFunc="ExtendBooking" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
@@ -286,8 +283,8 @@ function ButtonControl(props){
       else if (timeDifference >= 5){
         let DropdownContent = [timeDifference]
         return (
-          <div> <h4> Extend/Book after this meeting Now: </h4>
-          <table class="buttonContainer"><tr>
+          <div id="menu">
+          <table id="buttonContainer"><tr>
           <td class="td-btn"><FFButton ButtonTitle="Book After" DropdownContent={DropdownContent} BtnFunc="BookAfter" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="Extend" DropdownContent={DropdownContent} BtnFunc="ExtendBooking" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
           <td class="td-btn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
@@ -296,7 +293,7 @@ function ButtonControl(props){
       }
       else {
 		let DropdownContent = [0]
-        return (<div> <h4> Room is unavailable </h4>
+        return (<div id="menu"> <h4> Room is unavailable </h4>
           <div class="dropdown">
             <FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
           </div>
@@ -307,8 +304,8 @@ function ButtonControl(props){
     {
       let DropdownContent = [15, 30, 60, 120]
       return (
-        <div> <h4> Extend/Book after this meeting Now: </h4>
-        <table class="buttonContainer"><tr>
+        <div id="menu">
+        <table id="buttonContainer"><tr>
         <td class="td-btn"><FFButton ButtonTitle="Book After" DropdownContent={DropdownContent} BtnFunc="BookAfter" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
         <td class="td-btn"><FFButton ButtonTitle="Extend" DropdownContent={DropdownContent} BtnFunc="ExtendBooking" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
         <td class="td-btn"><FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/></td>
@@ -326,7 +323,7 @@ function ButtonControl(props){
       if (timeDifference > 120){
         let DropdownContent = [15, 30, 60, 120];
         return (
-        <div> <h4> Book This Room Now: </h4>
+        <div id="menu">
           <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
@@ -334,7 +331,7 @@ function ButtonControl(props){
       else if (timeDifference > 90){
         let DropdownContent = [15, 30, 60, 90];
         return (
-        <div> <h4> Book This Room Now: </h4>
+        <div id="menu">
           <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
@@ -342,7 +339,7 @@ function ButtonControl(props){
       else if (timeDifference > 60){
         let DropdownContent = [15, 30, 45, 60];
         return (
-        <div> <h4> Book This Room Now: </h4>
+        <div id="menu">
           <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
@@ -350,7 +347,7 @@ function ButtonControl(props){
       else if (timeDifference > 45){
         let DropdownContent = [15, 30, 45];
         return (
-        <div> <h4> Book This Room Now: </h4>
+        <div id="menu">
           <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
@@ -358,7 +355,7 @@ function ButtonControl(props){
       else if (timeDifference > 30){
         let DropdownContent = [15, 30];
         return (
-        <div> <h4> Book This Room Now: </h4>
+        <div id="menu">
           <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
@@ -366,7 +363,7 @@ function ButtonControl(props){
       else if (timeDifference > 15){
         let DropdownContent = [15, timeDifference];
         return (
-        <div> <h4> Book This Room Now: </h4>
+        <div id="menu">
           <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
@@ -374,7 +371,7 @@ function ButtonControl(props){
       else if (timeDifference >= 5){
         let DropdownContent = [timeDifference];
         return (
-        <div> <h4> Book This Room Now: </h4>
+        <div id="menu">
           <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
@@ -391,7 +388,7 @@ function ButtonControl(props){
           if (timeDifference > 120){
             DropdownContent = [15, 30, 60, 120]
             return (
-              <div> <h4> Book after next meeting Now: </h4>
+              <div id="menu">
               <FFButton ButtonTitle="Book After Next" DropdownContent={DropdownContent} BtnFunc="BookAfterNext" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
               </div>
             );
@@ -399,7 +396,7 @@ function ButtonControl(props){
           else if (timeDifference > 90){
             DropdownContent = [15, 30, 60, 90];
             return (
-              <div> <h4> Book after next meeting Now: </h4>
+              <div id="menu">
               <FFButton ButtonTitle="Book After Next" DropdownContent={DropdownContent} BtnFunc="BookAfterNext" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
               </div>
             );
@@ -407,7 +404,7 @@ function ButtonControl(props){
           else if (timeDifference > 60){
             DropdownContent = [15, 30, 45, 60];
             return (
-              <div> <h4> Book after next meeting Now: </h4>
+              <div id="menu">
               <FFButton ButtonTitle="Book After Next" DropdownContent={DropdownContent} BtnFunc="BookAfterNext" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
               </div>
             );
@@ -415,7 +412,7 @@ function ButtonControl(props){
           else if (timeDifference > 30){
             DropdownContent = [15, 30, timeDifference];
             return (
-              <div> <h4> Book after next meeting Now: </h4>
+              <div id="menu"> 
               <FFButton ButtonTitle="Book After Next" DropdownContent={DropdownContent} BtnFunc="BookAfterNext" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
               </div>
             );
@@ -423,7 +420,7 @@ function ButtonControl(props){
           else if (timeDifference > 15){
             DropdownContent = [15, timeDifference];
             return (
-              <div> <h4> Book after next meeting Now: </h4>
+              <div id="menu">
               <FFButton ButtonTitle="Book After Next" DropdownContent={DropdownContent} BtnFunc="BookAfterNext" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
               </div>
             );
@@ -431,19 +428,20 @@ function ButtonControl(props){
           else if (timeDifference > 5) {
             DropdownContent = [timeDifference];
             return (
-              <div> <h4> Book after next meeting Now: </h4>
+              <div id="menu">
               <FFButton ButtonTitle="Book After Next" DropdownContent={DropdownContent} BtnFunc="BookAfterNext" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
               </div>
             );
           }
           else{
-            return (<div> <h4> Room is unavailable </h4></div>);
+            return (<div id="menu">
+		    </div>);
           }
         }
         else{
           let DropdownContent = [15, 30, 60, 120]
           return (
-            <div> <h4> Book after next meeting Now: </h4>
+            <div id="menu"> <h4> Book after next meeting Now: </h4>
             <FFButton ButtonTitle="Book After Next" DropdownContent={DropdownContent} BtnFunc="BookAfterNext" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
             </div>
           );
@@ -454,36 +452,24 @@ function ButtonControl(props){
     {
     let DropdownContent = [15, 30, 60, 120];
       return (
-      <div> <h4> Book This Room Now: </h4>
+      <div id="menu">
         <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
       </div>
       );
     }
   }
 }
+
 const RoomStatusBlock = ({ config, details, room, togglePopup, showPopup }) => (
   <div className={room.Busy ? 'columns small-8 left-col busy' : 'columns small-8 left-col open'}>
-  <table id="single-room__logo-name-table">
-    <tr><td id="single-room__org-logo-td">
-    <div id="single-room__org-logo">
-      <img src="../img/logo.png" alt="Logo" id="single-room__org-logo__img" />
-    </div>
-    </td>
-    <td>
     <div id="single-room__room-name">{room.Name}</div>
-    </td></tr>
-    </table>
-    <div id="single-room__room-status">{room.Busy ? config.statusBusy : config.statusAvailable}</div>
-      <ButtonControl room={room} details={details} togglePopup={togglePopup} showPopup={showPopup}/>
-      <Details room={room} details={details} />
-      <Time room={room} details={details} />
-      <Organizer room={room} details={details} />
-      {process.env.REACT_APP_FLIGHTBOARD_MODE=="true" &&
-      <Link to={'../'} target="_self">
-          <li className="chevron">Back to Flightboard</li>
-      </Link>
-      }
-    
+    <div id={room.Busy ? 'single-room__room-status' : 'single-room__room-status-open'}>
+	{room.Busy ? room.Appointments[0].Subject /*config.statusBusy*/ : config.statusAvailable}
+	</div>
+	<Details room={room} details={details} />
+	<Organizer room={room} details={details} />
+	<Time room={room} details={details} />
+	<ButtonControl room={room} details={details} togglePopup={togglePopup} showPopup={showPopup}/>
   </div>
 );
 
@@ -496,4 +482,5 @@ RoomStatusBlock.propTypes = {
 }
 
 export default RoomStatusBlock;
+
 

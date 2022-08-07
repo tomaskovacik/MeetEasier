@@ -8,7 +8,8 @@ h4,
 h5,
 h6,
 #app {
-  font-family: 'Titillium Web', sans-serif;
+  //font-family: 'Titillium Web', sans-serif;
+  font-family: sans-serif;
 }
 
 body,
@@ -67,7 +68,7 @@ body {
   li {
     text-transform: uppercase;
     font-size: 1.3vw;
-    line-height: 2;
+    line-height: 1.5;
     color: $primaryFont;
     padding: 8px 30px;
   }
@@ -84,9 +85,11 @@ body {
       padding-top: 0;
       padding-bottom: 0;
       font-size: 14px;
+		border: 1px solid blue;
 
       .fb__child-dropdown {
         li {
+		border: 1px solid red;
           min-width: 250px;
           font-size: 12px;
           padding: 0.7rem 1rem;
@@ -109,7 +112,7 @@ body {
     border-left: 1px solid $titleBarLiBorder;
     color: $primaryFont;
     font-size: 28px;
-    line-height: 2;
+    line-height: 1.5;
   }
 
   li:first-child {
@@ -159,7 +162,7 @@ body {
 
   .meeting-busy {
     font-size: 24px;
-    color: $red;
+    color: $busyLeftText;
   }
 
   .meeting-open {
@@ -235,53 +238,133 @@ body {
     .left-col {
       background: black;
       padding: 30px;
-
+	
+      #left-upper {
+      //padding: 30px;
+      }
       #single-room__room-name {
-        font-size: 3vw;
+        font-size: 6vw;
       }
 
-      #single-room__room-status {
+      #single-room__room-status{
         text-transform: uppercase;
         padding: 4% 0;
-        font-size: 18vw;
+        font-size: 10vw;
+	margin:0;
+	padding:0;
+	margin-bottom: 10px;
         font-weight: lighter;
+	line-height: 1;
+	height: 40%;
       }
+
+
+      #single-room__room-status-open{
+        text-transform: uppercase;
+        font-size: 25vw;
+        margin:35px;
+	text-align:center;
+      }
+
 
       #single-room__meeting-title {
         font-size: 2.7vw;
         font-weight: lighter;
 
-        #single-room__next-up {
+        //#single-room__next-up {
+        #single-room__meeting-subject {
           font-weight: bold;
         }
       }
 
       #single-room__meeting-time {
-        font-size: 2vw;
+        font-size: 3vw;
         font-weight: lighter;
       }
 
       #single-room__meeting-organizer {
-        font-size: 1.6vw;
+        font-size: 5vw;
         font-weight: lighter;
       }
+}
+	#single-room__menu {
+//    	height: 20%;
+	position:absolute;
+	bottom:0;
+	left:0;
+	width: 66.6667%;
+	background-color: darkgrey;
+	padding:0;
+	margin:0;
+	color: black;
     }
 
+    #single-room__menu h4 {
+	height: 0;
+	font-size:0;
+    }
+
+#buttonContainer{
+	text-align: center;
+	width: 66.667%;
+    }
+
+     .btn {
+	     background: darkgrey;
+	     line-height:6;
+	     font-size: 3vw;
+	     color: black;
+	   }
+    .BookNow {
+	     left: 0;
+	     bottom:0;
+	     position: absolute;
+    	width: 66.667%;
+    }
+
+    .BookAfter{
+	    position: absolute;
+	    bottom:0;
+	    left:0;
+	width:100%;
+    	width: 22.221%;
+	border-right: 1px solid black;
+	}
+    .ExtendBooking{
+            position: absolute;
+            bottom:0;
+            left:22.221%;
+
+        width:100%;
+        width: 22.221%;
+	border-right: 1px solid black;
+        }
+    .EndNow{
+	                position: absolute;
+            bottom:0;
+            left:44.442%;
+
+        width:100%;
+        width: 22.221%;
+        }
+
+
     .busy {
-      background: $red;
+      background: $busyLeftBg;
     }
 
     .open {
-      background: $greenDark;
+      background: $openLeftBg;
+      color: $openLeftText;
     }
 
     .right-col {
-      background: white;
+      background: $SingleRoomRightBg;
       padding: 30px;
       color: black;
 
       #single-room__clock-wrap {
-        padding-bottom: 80px;
+//        padding-bottom: 80px;
         font-weight: lighter;
 
         #single-room__clock {
@@ -291,8 +374,8 @@ body {
             font-size: 4vw;
           }
           #single-room__date {
-            font-size: 2.7vw;
-            color: $gray;
+            font-size: 6vw;
+            color: $SingleRoomRightDateColor;
           }
         }
 
@@ -302,6 +385,7 @@ body {
         font-size: 2.2vw;
         text-transform: uppercase;
         font-weight: lighter;
+text-align: center;
       }
 
       table {
@@ -311,17 +395,20 @@ body {
           td {
             padding: 10px 8px;
           }
-
-          td.up__meeting-title {
-            font-size: 1.1vw;
-          }
-
-          td.up__meeting-time {
-            font-size: 0.9vw;
-            color: $gray;
-          }
         }
       }
+
+      .up__meeting-title {
+            font-size: 2vw;
+  //          text-align: center;
+          }
+
+      .up__meeting-time {
+            font-size: 2vw;
+    //        text-align: center;
+//            color: $gray;
+          }
+
 
       .upcoming-item {
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+var mL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 class Clock extends Component {
   constructor(props) {
@@ -28,10 +29,12 @@ class Clock extends Component {
     return (
       <div id="single-room__clock">
         <div id="single-room__time">
-          {this.state.date.toLocaleTimeString([],{hour: '2-digit', minute: '2-digit'})}
+          {
+//		  this.state.date.toLocaleTimeString('sk-SK',{hour: '2-digit', minute: '2-digit'})
+	  }
         </div>
         <div id="single-room__date">
-          {this.state.date.toLocaleDateString([],{month: 'long', day: '2-digit'})}
+	    {this.state.date.getDate() + ' ' + mL[this.state.date.getMonth()]}
         </div>
       </div>
 

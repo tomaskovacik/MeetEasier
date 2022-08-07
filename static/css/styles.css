@@ -6,7 +6,7 @@ h4,
 h5,
 h6,
 #app {
-  font-family: 'Titillium Web', sans-serif; }
+  font-family: sans-serif; }
 
 body,
 html {
@@ -33,48 +33,39 @@ body {
 .title-bar {
   background: #333;
   padding: 0;
-  border-bottom: 1px solid #474747;
-  }
+  border-bottom: 1px solid #474747; }
 
 .title-bar-title {
   padding-left: 25px; }
-#fb__navbar-title{
-	font-size: 2.6vw;
-	-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-	max-height: 1.3vw;
-}
 
 .menu-icon {
   padding-right: 25px; }
 
-.fb__nav-menu-right{
-	-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-}
 .fb__nav-menu i,
 .fb__nav-menu-right i {
   font-size: 24px;
-  padding-right: 8px;
-  }
+  padding-right: 8px; }
+
 .fb__nav-menu a {
   color: #ffffff; }
 .fb__nav-menu li {
   text-transform: uppercase;
-  font-size: 2vw;
-  line-height: 2;
+  font-size: 1.3vw;
+  line-height: 1.5;
   color: #ffffff;
-  padding: 5px 5px; }
+  padding: 8px 30px; }
 .fb__nav-menu img {
-  max-height: 70px;
-  min-height: 50px; }
+  max-height: 70px; }
 .fb__nav-menu .fb__dropdown {
-  visibility: hidden;/*comment out this line to make the room list filter visible*/
   margin-top: -15px; }
   .fb__nav-menu .fb__dropdown li {
     line-height: normal;
     padding-top: 0;
     padding-bottom: 0;
-    font-size: 14px; }
+    font-size: 14px;
+    border: 1px solid blue; }
     .fb__nav-menu .fb__dropdown li .fb__child-dropdown li {
+      border: 1px solid red;
       min-width: 250px;
       font-size: 12px;
       padding: 0.7rem 1rem;
@@ -89,7 +80,7 @@ body {
   border-left: 1px solid #474747;
   color: #ffffff;
   font-size: 28px;
-  line-height: 2; }
+  line-height: 1.5; }
 .fb__nav-menu-right li:first-child {
   border: 0; }
 .fb__nav-menu-right li:first-child:hover {
@@ -108,7 +99,7 @@ body {
   padding: 2px 0; }
 
 .tracker-wrap {
-  padding-top: 5px; }
+  padding-top: 15px; }
 
 .full-width {
   width: 100%;
@@ -118,40 +109,31 @@ body {
 
 .meeting-room {
   border: 1px solid #474747;
-  border-left: 8px solid 004D44;
+  border-left: 8px solid #3adb76;
   width: 100%;
   background-color: #333;
-  padding: 1px 20px;
-  /*padding: 10px 50px;*/ }
+  padding: 10px 50px; }
   .meeting-room .meeting-busy {
     font-size: 24px;
-    color: #f04124; 
-    max-width:75px !important;
-  }
+    color: white; }
   .meeting-room .meeting-open {
     font-size: 24px;
-    color: rgb(45, 122, 21);
-    max-width:75px !important;
-	 }
+    color: #3adb76; }
   .meeting-room .meeting-upcoming {
-    font-size: 22px;
+    font-size: 24px;
     color: #ffae00; }
   .meeting-room .meeting-error {
-    font-size: 22px;
+    font-size: 24px;
     color: #f3840e; }
   .meeting-room .meeting-room__name {
-    font-size: 24px;
+    font-size: 30px;
     color: #eceef1; }
   .meeting-room .meeting-room__name:first-letter {
     text-transform: uppercase; }
   .meeting-room .meeting-subject {
-    font-size: 22px;
-    color: darkcyan; }
+    font-size: 24px; }
   .meeting-room .meeting-time {
     color: #d4d6d8; }
-  .meeting-room .meeting-organizer {
-    color: teal ;
-  }
   .meeting-room .meeting-fullscreen a {
     font-size: 36px;
     color: #d4d6d8; }
@@ -174,81 +156,111 @@ body {
       height: 100vh; }
     #single-room__wrap .full-height .left-col {
       background: black;
-      padding: 10px; }
+      padding: 30px; }
       #single-room__wrap .full-height .left-col #single-room__room-name {
-        font-size: 3vw;
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select:none;
-		user-select:none;
-		-o-user-select:none;
-		}
+        font-size: 6vw; }
       #single-room__wrap .full-height .left-col #single-room__room-status {
-		  -moz-user-select: none;
-		  -webkit-user-select: none;
-		  -ms-user-select:none;
-		  user-select:none;
-		  -o-user-select:none;
         text-transform: uppercase;
-        /*padding: 1% 0;*/
-        font-size: 15vw;
-        line-height:1 !important;
-        /*font-weight: lighter;*/ }
+        padding: 4% 0;
+        font-size: 10vw;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 10px;
+        font-weight: lighter;
+        line-height: 1;
+        height: 40%; }
+      #single-room__wrap .full-height .left-col #single-room__room-status-open {
+        text-transform: uppercase;
+        font-size: 25vw;
+        margin: 35px;
+        text-align: center; }
       #single-room__wrap .full-height .left-col #single-room__meeting-title {
-		  -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
         font-size: 2.7vw;
         font-weight: lighter; }
-        #single-room__wrap .full-height .left-col #single-room__meeting-title #single-room__next-up {
-			-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
+        #single-room__wrap .full-height .left-col #single-room__meeting-title #single-room__meeting-subject {
           font-weight: bold; }
       #single-room__wrap .full-height .left-col #single-room__meeting-time {
-		  -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-        font-size: 2vw;
+        font-size: 3vw;
         font-weight: lighter; }
       #single-room__wrap .full-height .left-col #single-room__meeting-organizer {
-		  -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-        font-size: 2vw;
-        font-weight: lighter;
-		padding-bottom:10px;
-      }
+        font-size: 5vw;
+        font-weight: lighter; }
+    #single-room__wrap .full-height #single-room__menu {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 66.6667%;
+      background-color: darkgrey;
+      padding: 0;
+      margin: 0;
+      color: black; }
+    #single-room__wrap .full-height #single-room__menu h4 {
+      height: 0;
+      font-size: 0; }
+    #single-room__wrap .full-height #buttonContainer {
+      text-align: center;
+      width: 66.667%; }
+    #single-room__wrap .full-height .btn {
+      background: darkgrey;
+      line-height: 6;
+      font-size: 3vw;
+      color: black; }
+    #single-room__wrap .full-height .BookNow {
+      left: 0;
+      bottom: 0;
+      position: absolute;
+      width: 66.667%; }
+    #single-room__wrap .full-height .BookAfter {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      width: 22.221%;
+      border-right: 1px solid black; }
+    #single-room__wrap .full-height .ExtendBooking {
+      position: absolute;
+      bottom: 0;
+      left: 22.221%;
+      width: 100%;
+      width: 22.221%;
+      border-right: 1px solid black; }
+    #single-room__wrap .full-height .EndNow {
+      position: absolute;
+      bottom: 0;
+      left: 44.442%;
+      width: 100%;
+      width: 22.221%; }
     #single-room__wrap .full-height .busy {
-		-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-      background: #f04124; }
+      background: black; }
     #single-room__wrap .full-height .open {
-		-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-      background: #004D44; }
-    #single-room__wrap .full-height .right-col {
-	  -moz-user-select: none;
-	  -webkit-user-select: none;
-	  -ms-user-select:none;
-	  user-select:none;
-	  -o-user-select:none;
       background: white;
+      color: black; }
+    #single-room__wrap .full-height .right-col {
+      background: lightgrey;
       padding: 30px;
       color: black; }
       #single-room__wrap .full-height .right-col #single-room__clock-wrap {
-        padding-bottom: 80px;
         font-weight: lighter; }
         #single-room__wrap .full-height .right-col #single-room__clock-wrap #single-room__clock {
           text-align: center; }
           #single-room__wrap .full-height .right-col #single-room__clock-wrap #single-room__clock #single-room__time {
             font-size: 4vw; }
           #single-room__wrap .full-height .right-col #single-room__clock-wrap #single-room__clock #single-room__date {
-            font-size: 2.7vw;
-            color: #474747; }
+            font-size: 6vw;
+            color: black; }
       #single-room__wrap .full-height .right-col #upcoming-title {
         font-size: 2.2vw;
         text-transform: uppercase;
-        font-weight: lighter; }
+        font-weight: lighter;
+        text-align: center; }
       #single-room__wrap .full-height .right-col table tr {
         border-bottom: 1px solid #eceef1; }
         #single-room__wrap .full-height .right-col table tr td {
           padding: 10px 8px; }
-        #single-room__wrap .full-height .right-col table tr td.up__meeting-title {
-          font-size: 1.1vw; }
-        #single-room__wrap .full-height .right-col table tr td.up__meeting-time {
-          font-size: 0.9vw;
-          color: #474747; }
+      #single-room__wrap .full-height .right-col .up__meeting-title {
+        font-size: 2vw; }
+      #single-room__wrap .full-height .right-col .up__meeting-time {
+        font-size: 2vw; }
   #single-room__wrap #error-wrap {
     width: 600px;
     margin: 0 auto;
@@ -259,178 +271,7 @@ body {
         font-weight: bold;
         font-size: 3.2vw;
         padding-bottom: 25px; }
-/* --- for raspberry pi screen ---*/
-.up__meeting-time{font-size:14px !important;width:48% !important;padding-right:10px !important; padding-top:5px !important; padding-bottom:5px !important}
-.up__meeting-title{font-size:14px !important;}
-.medium-12.columns{
-  padding-left: 3px !important;
-  padding-right: 3px !important;
-}
-.medium-3.columns{
-	line-height:1.3;
-}
-.medium-2.columns{
-  padding-left: 3px !important;
-  padding-right: 10px !important;
-  max-width:80px !important;
-  width:60px !important;
-}
-.medium-6.columns{
-  padding-left: 5px !important;
-  padding-right: 5px !important;
-  line-height: 1.3;
-  color: white;
-  width: 100vw !important;
-}
-#single-room__clock-wrap{padding-bottom: 15px !important;}
-.right-col{padding-top: 10px !important; padding-bottom:10px !important;}
-.left-col{padding-top: 10px !important; padding-bottom:10px !important;padding-right:10px !important}
-#single-room__meeting-time{font-size:20px !important;}
-.small-8 {width:60% !important;}
-.small-4 {width:40% !important;}
-/* --- for raspberry pi screen ---*/
-#single-room__org-logo__img{
-  /*width: 100%;*/
-}
-#single-room__room-name{
-  /*max-width: 50% !important;*/
-}
-#single-room__logo-name-table{
-  margin-bottom: 1px !important;
-}
-#single-room__org-logo-td{
-  /*max-width:50% !important;*/
-}
-#single-room__org-logo{
-	-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-  max-width:200px !important;
-}
-i.fi-monitor{
-  height:60px !important;
-  width:60px !important;
-}
-.chevron{
-  /*height:40px !important;*/
-  /*width: 180px !important;*/
-  border-radius: 5px;
-  border: 1px solid black;
-  font-size: 2.5vw !important;
-  padding: 5px 5px 5px 5px;
-  text-align: center;
-  background-color: grey;
-  color: white;
-  font-style: normal;
-  /*line-height:2.5em;*/
-  width:90% !important;
-  list-style-type: none;
 
-}
-.btn {
-  border-radius: 5px;
-  border: 1px solid black;
-  font-size: 2.5vw !important;
-  padding: 5px 5px;
-  text-align: center;
-  background-color: grey;
-  display: inline-block !important;
-  min-height: 50px;
-  width: 90%;
-  min-width: 90%;
-  height:100% !important;
-}
-.btn:active {
-  background-color: purple;
-}
-.btn:disabled{
-  background-color: rgba(169, 169, 169, 0.5);
-  color: black;
-  visibility: hidden;
-}
-/*DropDown Buttons*/
-.dropdown {
-  position: relative !important;
-  height: 6.5vw !important;
- /*display: inline-block !important;*/
-}
-
-.dropdown a:hover {
-  background-color: #ddd !important;
-}
-.dropdown-content1 {
-  position: absolute;
-  /*background-color: #f1f1f1;*/
-  min-width: 100%;
-  left: 0 !important;
-  /*overflow: auto;*/
-  z-index: 1;
-}
-.dropdown-content1 a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.show {display: block;}
-.btn-drop {
-  border-radius: 5px;
-  border: 1px solid black;
-  font-size: 2.5vw;
-  padding: 5px 5px;
-  text-align: center;
-  background-color: grey;
-  display: inline-block !important;
-  left: 0;
-  min-height: 40px !important;
-  height:100% !important;
-  width: 90%;
-  min-width:90%;
-  margin-left: 0 !important;
-  /*position:relative !important;*/
-}
-.btn-drop:active {
-  background-color: purple;
-}
-.buttonContainer{
-  display: table;
-}
-.td-btn{
-  width:33%;
-  display: table-cell;
-}
-ul{
-  margin-left:0 !important;
-}
-/*DropDown Buttons*/
-/*Popup Screen*/
-.popupNotification {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.85);
-  text-align: center;
-  padding-top: 12vw;
-  padding-bottom: 12vw;
-  vertical-align: middle;
-}
-
-/*.popupNotification .inner {
-  position: absolute;
-  left: 50%;
-  right: 50%;
-  top: 50%;
-  bottom: 50%;
-  margin: auto;
-  border-radius:20px;
-  background:black;
-  text-align: center;
-}*/
-/*Popup Screen*/
 @media screen and (min-width: 40em) {
   .valign-middle {
     display: table;

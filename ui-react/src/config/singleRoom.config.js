@@ -1,6 +1,6 @@
 module.exports = {
   'nextUp' : 'Next Up',
-  'statusAvailable' : 'Open',
+  'statusAvailable' : 'Free',
   'statusBusy' : 'Busy',
-  'upcomingTitle' : 'Upcoming',
+  'upcomingTitle' : 'UPCOMING:',
 };
