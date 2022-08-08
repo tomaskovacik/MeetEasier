@@ -88,11 +88,11 @@ class FFButton extends React.Component {
       <button type="button" class="btn BookAfterNext btn-drop" disabled={showPopup} onClick={(e) => {BookAfter(number, room, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>{number} Minutes</button>
       );
     }
-	else if (this.props.BtnFunc == "EndNow"){
+	else if (this.props.BtnFunc == "SingleEndNow"){
     contentDropdown = <div>
-    <button type="button" class="btn EndNow btn-drop" disabled={showPopup}>Please Confirm:</button>
-    <button type="button" class="btn EndNow btn-drop" disabled={showPopup} onClick={e => {EndNow(room, currentAppointmentStart, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>YES</button>
-    <button type="button" class="btn EndNow btn-drop" disabled={showPopup} onClick={e => {this.setVisible()}}>NO</button>
+    <button type="button" class="btn SingleEndNow btn-drop1" disabled={showPopup}>Please Confirm:</button>
+    <button type="button" class="btn SingleEndNow btn-drop2" disabled={showPopup} onClick={e => {EndNow(room, currentAppointmentStart, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>YES</button>
+    <button type="button" class="btn SingleEndNow btn-drop3" disabled={showPopup} onClick={e => {this.setVisible()}}>NO</button>
     </div>
     }
     else {
@@ -295,7 +295,9 @@ function ButtonControl(props){
 		let DropdownContent = [0]
         return (<div id="menu"> <h4> Room is unavailable </h4>
           <div class="dropdown">
-            <FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="EndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+		<div class="singleBtn">
+            <FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="SingleEndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+		</div>
           </div>
         </div>);
       }

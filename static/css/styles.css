@@ -210,6 +210,11 @@ body {
       bottom: 0;
       position: absolute;
       width: 66.667%; }
+    #single-room__wrap .full-height .SingleEndNow {
+      left: 0;
+      bottom: 0;
+      position: absolute;
+      width: 66.667%; }
     #single-room__wrap .full-height .BookAfter {
       position: absolute;
       bottom: 0;
