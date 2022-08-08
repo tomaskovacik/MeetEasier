@@ -293,11 +293,9 @@ function ButtonControl(props){
       }
       else {
 		let DropdownContent = [0]
-        return (<div id="menu"> <h4> Room is unavailable </h4>
+        return (<div id="menu">
           <div class="dropdown">
-		<div class="singleBtn">
             <FFButton ButtonTitle="End Meeting" DropdownContent={DropdownContent} BtnFunc="SingleEndNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
-		</div>
           </div>
         </div>);
       }
