@@ -252,10 +252,12 @@ body {
         font-size: 10vw;
 	margin:0;
 	padding:0;
-	margin-bottom: 10px;
         font-weight: lighter;
 	line-height: 1;
-	height: 40%;
+	height: 65%;
+	display: flex;
+  justify-content: center;
+  align-items: center;
       }
 
 
@@ -264,6 +266,10 @@ body {
         font-size: 20vw;
         margin:35px;
 	text-align:center;
+	display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 65%;
       }
 
 
