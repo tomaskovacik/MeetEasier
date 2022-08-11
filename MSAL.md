@@ -36,7 +36,9 @@ Add-DistributionGroupMember -Identity "Centrála" -Member mr2@domain.com
 controll cmd:
 
 Get-Mailbox -ResultSize unlimited -Filter "RecipientTypeDetails -eq 'RoomMailbox'" | Get-CalendarProcessing | Format-List Identity,ScheduleOnlyDuringWorkHours,MaximumDurationInMinuteshistory
- 
+
+IT TAKES HOURS FOR THIS TO WORKS OVER GRAPH!
+
 
 remove:
 
