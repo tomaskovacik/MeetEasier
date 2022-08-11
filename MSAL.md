@@ -16,18 +16,27 @@ for next dev step -> add booking on site, write permission somewhere will be nee
 
 
 how to create rooms and roomlist:
+
 admin.microsot.com
+
 resources->add resource, room, email, name... etc
 
 powershell:
+
 Connect-ExchangeOnline
+
 New-DistributionGroup -Name "Headquarters" -RoomList
+
 Add-DistributionGroupMember -Identity "Centrála" -Member mr1@domain.com
+
 Add-DistributionGroupMember -Identity "Centrála" -Member mr2@domain.com
+
 ....
 
 remove:
+
 Remove-DistributionGroup -identity "Headquarters"
+
 remove resources in admin.microsoft.com
 
 
