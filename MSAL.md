@@ -1,5 +1,5 @@
 
-aiad.portal.azure.com -> app registration -> New registration -> whatever name ->  single tenant ->  no redirect url -> register
+aad.portal.azure.com -> app registration -> New registration -> whatever name ->  single tenant ->  no redirect url -> register
 
 Authentication -> add platorm -> web -> redirect: http://localhost:8888/redirect (do we need this? ....)
 
