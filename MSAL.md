@@ -33,10 +33,17 @@ Add-DistributionGroupMember -Identity "Centrála" -Member mr2@domain.com
 
 ....
 
+controll cmd:
+
+Get-Mailbox -ResultSize unlimited -Filter "RecipientTypeDetails -eq 'RoomMailbox'" | Get-CalendarProcessing | Format-List Identity,ScheduleOnlyDuringWorkHours,MaximumDurationInMinuteshistory
+ 
+
 remove:
 
 Remove-DistributionGroup -identity "Headquarters"
 
 remove resources in admin.microsoft.com
+
+
 
 
