@@ -31,9 +31,9 @@ Add-DistributionGroupMember -Identity "Headquarters" -Member mr1@domain.com
 
 Add-DistributionGroupMember -Identity "Headquarters" -Member mr2@domain.com
 
-Set-CalendarProcessing -Identity mr1@domain.com -DeleteSubject $False -AddOrganizerToSubject $False
+Set-CalendarProcessing -Identity mr1@domain.com -DeleteSubject $False -AddOrganizerToSubject $False -RemovePrivateProperty $false
 
-Set-CalendarProcessing -Identity mr2@domain.com -DeleteSubject $False -AddOrganizerToSubject $False
+Set-CalendarProcessing -Identity mr2@domain.com -DeleteSubject $False -AddOrganizerToSubject $False -RemovePrivateProperty $false
 
 ....
 
