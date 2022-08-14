@@ -1,7 +1,5 @@
 
-aad.portal.azure.com -> app registration -> New registration -> whatever name ->  single tenant ->  no redirect url -> register
-
-Authentication -> add platorm -> web -> redirect: http://localhost:8888/redirect (do we need this? ....)
+aad.portal.azure.com -> app registration -> New registration -> whatever name ->  single tenant ->  redirect url: http://localhost:8888/redirect -> register
 
 app registration -> click on newly created app -> certificates & secrets -> New client secret -> whatever decription, expires -> what ever you like :) -> add
 
