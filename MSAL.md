@@ -27,15 +27,21 @@ Connect-ExchangeOnline
 
 New-DistributionGroup -Name "Headquarters" -RoomList
 
-Add-DistributionGroupMember -Identity "Centrála" -Member mr1@domain.com
+Add-DistributionGroupMember -Identity "Headquarters" -Member mr1@domain.com
 
-Add-DistributionGroupMember -Identity "Centrála" -Member mr2@domain.com
+Add-DistributionGroupMember -Identity "Headquarters" -Member mr2@domain.com
+
+Set-CalendarProcessing -Identity mr1@domain.com -DeleteSubject $False -AddOrganizerToSubject $False
+
+Set-CalendarProcessing -Identity mr2@domain.com -DeleteSubject $False -AddOrganizerToSubject $False
 
 ....
 
 controll cmd:
 
 Get-Mailbox -ResultSize unlimited -Filter "RecipientTypeDetails -eq 'RoomMailbox'" | Get-CalendarProcessing | Format-List Identity,ScheduleOnlyDuringWorkHours,MaximumDurationInMinuteshistory
+
+Get-CalendarProcessing -Identity mr1@domain.com|FL
 
 IT TAKES HOURS FOR THIS TO WORKS OVER GRAPH!
 
@@ -47,5 +53,6 @@ Remove-DistributionGroup -identity "Headquarters"
 remove resources in admin.microsoft.com
 
 
+sources:
 
-
+https://docs.microsoft.com/en-us/exchange/troubleshoot/client-connectivity/calendar-shows-organizer-name
