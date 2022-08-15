@@ -68,31 +68,36 @@ class FFButton extends React.Component {
       currentAppointmentStart = new Date(parseInt(room.Appointments[0].Start, 10));
     }
     let contentDropdown;
+	  let header;
     if (this.props.BtnFunc == "BookAfter"){
+	header = <button type="button" class="btn-header" disabled={showPopup}>Book after:</button>
       contentDropdown = this.props.DropdownContent.map((number) =>
-      <button type="button" class="btn BookAfter btn-drop " disabled={showPopup} onClick={(e) => {BookAfter(number, room, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>{number} Minutes</button>
+      <button type="button" class="btn BookAfter btn-drop" disabled={showPopup} onClick={(e) => {BookAfter(number, room, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>{number} Minutes</button>
     );
     }
     else if (this.props.BtnFunc == "ExtendBooking"){
+	header = <button type="button" class="btn-header" disabled={showPopup}>Extend Booking:</button>
       contentDropdown = this.props.DropdownContent.map((number) =>
       <button type="button" class="btn ExtendBooking btn-drop " disabled={showPopup} onClick={(e) => {ExtendBooking(number, room, currentAppointmentStart, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>{number} Minutes</button>
       );
     }
     else if (this.props.BtnFunc == "BookNow"){
+	header = <button type="button" class="btn-header" disabled={showPopup}>Book Now:</button>
       contentDropdown = this.props.DropdownContent.map((number) =>
       <button type="button" class="btn BookNow btn-drop" disabled={showPopup} onClick={(e) => {BookNow(number, room, this.props.togglePopup);this.setVisible()}}>{number} Minutes</button>
       );
     }
 	else if (this.props.BtnFunc == "BookAfterNext"){
+	header = <button type="button" class="btn-header" disabled={showPopup}>Book after next:</button>
       contentDropdown = this.props.DropdownContent.map((number) =>
       <button type="button" class="btn BookAfterNext btn-drop" disabled={showPopup} onClick={(e) => {BookAfter(number, room, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>{number} Minutes</button>
       );
     }
-	else if (this.props.BtnFunc == "SingleEndNow"){
+	else if (this.props.BtnFunc == "SingleEndNow" || this.props.BtnFunc == "EndNow"){
     contentDropdown = <div>
-    <button type="button" class="btn SingleEndNow btn-drop1" disabled={showPopup}>Please Confirm:</button>
-    <button type="button" class="btn SingleEndNow btn-drop2" disabled={showPopup} onClick={e => {EndNow(room, currentAppointmentStart, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>YES</button>
-    <button type="button" class="btn SingleEndNow btn-drop3" disabled={showPopup} onClick={e => {this.setVisible()}}>NO</button>
+    <button type="button" class="btn-header" disabled={showPopup}>End meeting?</button>
+    <button type="button" class="btn EndNow btn-drop" disabled={showPopup} onClick={e => {EndNow(room, currentAppointmentStart, currentAppointmentEnd, this.props.togglePopup);this.setVisible()}}>YES</button>
+    <button type="button" class="btn EndNow btn-drop" disabled={showPopup} onClick={e => {this.setVisible()}}>NO</button>
     </div>
     }
     else {
@@ -100,7 +105,8 @@ class FFButton extends React.Component {
     }
     return(
       <ul className="dropdown-content1">
-        {contentDropdown}
+	    {header}
+	    {contentDropdown}
       </ul>
     );
   }
@@ -461,7 +467,7 @@ function ButtonControl(props){
 }
 
 const RoomStatusBlock = ({ config, details, room, togglePopup, showPopup }) => (
-  <div className={room.Busy ? 'columns small-8 left-col busy' : 'columns small-8 left-col open'}>
+  <div className={room.Busy ? 'left-col busy' : 'left-col open'}>
     <div id="single-room__room-name">{room.Name}</div>
     <div id={room.Busy ? 'single-room__room-status' : 'single-room__room-status-open'}>
 	{room.Busy ? room.Appointments[0].Subject /*config.statusBusy*/ : config.statusAvailable}
@@ -471,6 +477,7 @@ const RoomStatusBlock = ({ config, details, room, togglePopup, showPopup }) => (
 	<Time room={room} details={details} />
 	<ButtonControl room={room} details={details} togglePopup={togglePopup} showPopup={showPopup}/>
   </div>
+
 );
 
 RoomStatusBlock.propTypes = {
