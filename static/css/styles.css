@@ -156,30 +156,49 @@ body {
       height: 100vh; }
     #single-room__wrap .full-height .left-col {
       background: black;
-      padding: 30px; }
+      padding: 30px 0 0 30px;
+      width: 651px;
+      height: 738px; }
       #single-room__wrap .full-height .left-col #single-room__room-name {
         font-size: 6vw; }
+      #single-room__wrap .full-height .left-col .dropdown-content1 {
+        position: absolute;
+        top: 70px;
+        left: 200px;
+        z-index: 1;
+        height: 500px;
+        width: 300px; }
+        #single-room__wrap .full-height .left-col .dropdown-content1 button {
+          width: 600px;
+          height: 120px;
+          line-height: 1;
+          position: static;
+          border: 0;
+          border: 1px solid black; }
+        #single-room__wrap .full-height .left-col .dropdown-content1 .btn-header {
+          background: darkgrey;
+          font-size: 3vw;
+          height: 80px; }
       #single-room__wrap .full-height .left-col #single-room__room-status {
         text-transform: uppercase;
-        padding: 4% 0;
         font-size: 10vw;
         margin: 0;
         padding: 0;
         font-weight: lighter;
         line-height: 1;
-        height: 65%;
+        height: 45%;
         display: flex;
         justify-content: center;
         align-items: center; }
       #single-room__wrap .full-height .left-col #single-room__room-status-open {
         text-transform: uppercase;
         font-size: 20vw;
-        margin: 35px;
         text-align: center;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 65%; }
+        height: 65%;
+        width: 620px; }
       #single-room__wrap .full-height .left-col #single-room__meeting-title {
         font-size: 2.7vw;
         font-weight: lighter; }
@@ -195,7 +214,7 @@ body {
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 66.6667%;
+      width: 651px;
       background-color: darkgrey;
       padding: 0;
       margin: 0;
@@ -205,7 +224,7 @@ body {
       font-size: 0; }
     #single-room__wrap .full-height #buttonContainer {
       text-align: center;
-      width: 66.667%; }
+      width: 651px; }
     #single-room__wrap .full-height .btn {
       background: darkgrey;
       line-height: 6;
@@ -215,32 +234,32 @@ body {
       left: 0;
       bottom: 0;
       position: absolute;
-      width: 66.667%; }
+      width: 651px; }
     #single-room__wrap .full-height .SingleEndNow {
       left: 0;
       bottom: 0;
       position: absolute;
-      width: 66.667%; }
+      width: 651px; }
     #single-room__wrap .full-height .BookAfter {
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 100%;
-      width: 22.221%;
+      width: 217px;
+      border: 0;
       border-right: 1px solid black; }
     #single-room__wrap .full-height .ExtendBooking {
       position: absolute;
       bottom: 0;
-      left: 22.221%;
-      width: 100%;
-      width: 22.221%;
+      left: 217px;
+      width: 217px;
+      border: 0;
       border-right: 1px solid black; }
     #single-room__wrap .full-height .EndNow {
       position: absolute;
       bottom: 0;
-      left: 44.442%;
-      width: 100%;
-      width: 22.221%; }
+      left: 434px;
+      width: 217px;
+      border: 0; }
     #single-room__wrap .full-height .busy {
       background: black; }
     #single-room__wrap .full-height .open {
@@ -248,8 +267,13 @@ body {
       color: black; }
     #single-room__wrap .full-height .right-col {
       background: lightgrey;
-      padding: 30px;
-      color: black; }
+      color: black;
+      width: 373px;
+      position: absolute;
+      left: 651px;
+      top: 0;
+      padding-top: 30px;
+      height: 738px; }
       #single-room__wrap .full-height .right-col #single-room__clock-wrap {
         font-weight: lighter; }
         #single-room__wrap .full-height .right-col #single-room__clock-wrap #single-room__clock {
@@ -260,18 +284,22 @@ body {
             font-size: 6vw;
             color: black; }
       #single-room__wrap .full-height .right-col #upcoming-title {
-        font-size: 2.2vw;
+        font-size: 2.5vw;
         text-transform: uppercase;
         font-weight: lighter;
-        text-align: center; }
-      #single-room__wrap .full-height .right-col table tr {
-        border-bottom: 1px solid #eceef1; }
-        #single-room__wrap .full-height .right-col table tr td {
-          padding: 10px 8px; }
+        text-align: center;
+        margin: 10px; }
+      #single-room__wrap .full-height .right-col table tr td {
+        padding: 10px 8px; }
       #single-room__wrap .full-height .right-col .up__meeting-title {
-        font-size: 2vw; }
+        font-size: 2vw;
+        width: 321px;
+        padding: 10px 8px 0 8px; }
       #single-room__wrap .full-height .right-col .up__meeting-time {
-        font-size: 2vw; }
+        font-size: 2vw;
+        width: 300px;
+        padding: 0 8px 10px 8px;
+        border-bottom: 1px solid #eceef1; }
   #single-room__wrap #error-wrap {
     width: 600px;
     margin: 0 auto;
