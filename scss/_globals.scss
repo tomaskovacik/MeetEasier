@@ -427,7 +427,9 @@ body {
       table {
         tr {
 
-          td {
+          td 
+	  {
+	   background-color: $SingleRoomRightBg;
             padding: 10px 8px;
           }
         }
@@ -435,8 +437,15 @@ body {
 
       .up__meeting-title {
             font-size: 2vw;
+	    font-weight: bold;
 	    width: 321px;
             padding: 10px 8px 0 8px;
+          }
+
+      .up__meeting-organizer {
+            font-size: 2vw;
+           width: 321px;
+            padding: 0px 8px 0 8px;
           }
 
       .up__meeting-time {
