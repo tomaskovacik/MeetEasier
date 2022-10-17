@@ -19,6 +19,7 @@ const Sidebar = ({ config, details, room }) => (
             <tr key={key}>
               <td>
 	      <div className="up__meeting-title" >{item.Subject}</div>
+	      <div className="up__meeting-organizer" >{item.Organizer}</div>
               <div className="up__meeting-time">
                 { item.Start && item.End ?
 			days[new Date(parseInt(item.Start, 10)).getDay()] + ' ' +
