@@ -4,7 +4,9 @@ Because why pay money for something you can do yourself?
 
 ## Description
 
-MeetEasier is a web application that visualizes meeting room availability. It works using Exchange Web Services (EWS) with Exchange room lists in Office 365.
+MeetEasier is a web application that visualizes meeting room availability. It works using Microsoft Graph API in Microsoft 365.
+
+**Note: The Exchange Web Services (EWS) is deprecated and will be removed in the future.**
 
 ![Mockup 1](mockups/mockup-1.jpg)
 
@@ -54,10 +56,9 @@ In the event of wanting to commercially distribute a closed source modification 
 
 This application assumes you have:
 
-- Exchange Online (Office 365)
+- Microsoft Graph API (Microsoft 365)
 - Conference room mailboxes organized in room lists
-- Exchange Web Services (EWS) enabled
-- A service account with access to all conference room mailboxes and EWS
+- A registered application in Azure AD (see [here](#setup-the-application-in-microsoft-365) for more information)
 - A web server with Node.js installed to run the application
 
 **Please Note:** This application uses Basic Authentication which, by its very nature, is insecure. I would strongly suggest using SSL where ever you decide to run this.
@@ -89,7 +90,7 @@ This application assumes you have:
 
 ## Root Folder Structure Explained
 
-- `app/` : Routes for EWS APIs
+- `app/` : Routes for MSGRAPH and EWS APIs
 - `app/ews/` : All EWS functionality
 - `app/msgraph/` : All Microsoft Graph functionality
 - `config/` : All server side configuration settings
@@ -173,7 +174,7 @@ And you're done!
 
 ### Configure the application
 
-- Set enviroment variables or use dotenv. See .env.template for details on what variables are needed.
+- Set enviroment variables or use .env file. See .env.template for details on what variables are needed.
   You may skip the EWS\_ variables as this is now deprecated.
 - To set as enviroment variables, run the following in the shell:
 
