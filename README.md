@@ -174,12 +174,18 @@ And you're done!
 
 ### Configure the application
 
-- Set enviroment variables or use .env file. See .env.template for details on what variables are needed.
-  You may skip the EWS\_ variables as this is now deprecated.
-- To set as enviroment variables, run the following in the shell:
+Set enviroment variables, or use a .env file (prefered method). See .env.template for details on what variables are needed.
+You may skip the EWS\_ and DOMAIN variables as this is now deprecated.
+
+- Using a .env file, rename or copy the .env.template file to .env and fill in the values. Run the following comand in the top-level directory of this project:
 
 ```bash
-export DOMAIN=example.com
+cp .env.template .env
+```
+
+- Using enviroment variables, run the following in the shell:
+
+```bash
 export OAUTH_CLIENT_ID=0c9c8ca8-5a1a-11ed-9b6a-0242ac120002 (from step 8 above)
 export OAUTH_AUTHORITY=https://login.microsoftonline.com/00afbbe0-5a1a-11ed-9b6a-0242ac120002 (from step 9 above)
 export OAUTH_CLIENT_SECRET=XuR8Q~OotnWOrUholnAZWu4p~5VplaCBGUZA1a9S (from step 15 above)
