@@ -181,8 +181,8 @@ And you're done!
 ```bash
 export DOMAIN=example.com
 export OAUTH_CLIENT_ID=0c9c8ca8-5a1a-11ed-9b6a-0242ac120002 (from step 8 above)
-export OAUTH_AUTHORITY=XuR8Q~OotnWOrUholnAZWu4p~5VplaCBGUZA1a9S (from step 15 above)
-export OAUTH_CLIENT_SECRET=https://login.microsoftonline.com/00afbbe0-5a1a-11ed-9b6a-0242ac120002 (from step 9 above)
+export OAUTH_AUTHORITY=https://login.microsoftonline.com/00afbbe0-5a1a-11ed-9b6a-0242ac120002 (from step 9 above)
+export OAUTH_CLIENT_SECRET=XuR8Q~OotnWOrUholnAZWu4p~5VplaCBGUZA1a9S (from step 15 above)
 export SEARCH_USE_GRAPHAPI=true
 export SEARCH_MAXROOMLISTS=10
 export SEARCH_MAXDAYS=10
