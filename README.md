@@ -1,7 +1,5 @@
 # branch for 6" black and white eink displays (joan 6")
 
-- no buttons works (end, extend, book next), they can be removed 
-
 ![](https://raw.githubusercontent.com/tomaskovacik/MeetEasier/6inchblackWhiteEink/6inch_bw_1.png)
 ![](https://raw.githubusercontent.com/tomaskovacik/MeetEasier/6inchblackWhiteEink/6inch_bw_2.png)
 ![](https://raw.githubusercontent.com/tomaskovacik/MeetEasier/6inchblackWhiteEink/6inch_bw_3.png)
