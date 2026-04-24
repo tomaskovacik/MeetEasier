@@ -13,8 +13,10 @@ const Sidebar = ({ config, details, room }) => (
       {config.upcomingTitle}
     </div>
     <table>
-	{ //details.upcomingAppointments ?
+      { //details.upcomingAppointments ?
         room.Appointments.slice(room.Busy?1:0).map((item, key) => {
+          const startDate = new Date(parseInt(item.Start, 10));
+          const endDate = new Date(parseInt(item.End, 10));
           return (
             <tr key={key}>
               <td>
@@ -22,10 +24,10 @@ const Sidebar = ({ config, details, room }) => (
 	      <div className="up__meeting-organizer" >{item.Organizer}</div>
               <div className="up__meeting-time">
                 { item.Start && item.End ?
-			days[new Date(parseInt(item.Start, 10)).getDay()] + ' ' +
-                  new Date(parseInt(item.Start, 10)).getHours() + ':' + (new Date(parseInt(item.Start, 10)).getMinutes() <= 9 ? '0':'' ) + new Date(parseInt(item.Start, 10)).getMinutes()
+                  days[startDate.getDay()] + ' ' +
+                  startDate.getHours() + ':' + (startDate.getMinutes() <= 9 ? '0':'' ) + startDate.getMinutes()
                   + ' - ' +
-                  new Date(parseInt(item.End, 10)).getHours() + ':' + (new Date(parseInt(item.End, 10)).getMinutes() <= 9 ? '0' : '' ) +new Date(parseInt(item.End, 10)).getMinutes()
+                  endDate.getHours() + ':' + (endDate.getMinutes() <= 9 ? '0' : '' ) + endDate.getMinutes()
                 :
                   ''
                 }
