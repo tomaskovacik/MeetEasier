@@ -136,8 +136,7 @@ function getAuthenticatedClient(msalClient) {
   }
 
   const clientCredentialRequest = {
-    scopes: ['.default'],
-    skipCache: true // (optional) this skips the cache and forces MSAL to get a new token from Azure AD
+    scopes: ['.default']
   };
 
   // Initialize Graph client

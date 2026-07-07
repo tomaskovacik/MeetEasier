@@ -9,7 +9,6 @@ class FFButton extends React.Component {
     super(props);
     this.state = {
       isVisible: false,
-      count: 0,
       previousElement: null
     };
   }
@@ -19,7 +18,7 @@ class FFButton extends React.Component {
 
   // Unbind event on unmount to prevent leaks
   componentWillUnmount() {
-    window.removeEventListener('mousedown', this.handleClickOutside, false);
+    document.removeEventListener('mousedown', this.handleClickOutside, false);
   }
 
   handleClickOutside = (event) => {
@@ -38,11 +37,6 @@ class FFButton extends React.Component {
       return {previousElement: event.target.className}
     });
   }
-  incrementCount(){
-    this.setState((state) => {
-      return {count: state.count + 1}
-    });
-  }
   setVisible(){
     this.setState((state) =>{
       return {isVisible: !state.isVisible}
@@ -50,7 +44,6 @@ class FFButton extends React.Component {
   }
   _handleClick = (e) => {
     e.preventDefault();
-    this.incrementCount();
     this.setVisible();
   }
   renderDropdown(){
@@ -136,15 +129,20 @@ const Details = ({room, details}) => (
   </div>
 );
 
-const Time = ({room, details}) => (
-  <div id="single-room__meeting-time">
-    { room.Busy && details.appointmentExists &&
-        new Date(parseInt(room.Appointments[0].Start, 10)).getHours() + ':' + (new Date(parseInt(room.Appointments[0].Start, 10)).getMinutes() <= 9 ? '0' : '') + new Date(parseInt(room.Appointments[0].Start, 10)).getMinutes()
-        + ' - ' +
-        new Date(parseInt(room.Appointments[0].End, 10)).getHours() + ':' + (new Date(parseInt(room.Appointments[0].End, 10)).getMinutes() <= 9 ? '0' : '') + new Date(parseInt(room.Appointments[0].End, 10)).getMinutes()
-    }
-  </div>
-);
+const Time = ({room, details}) => {
+  if (!(room.Busy && details.appointmentExists)) {
+    return <div id="single-room__meeting-time"></div>;
+  }
+  const start = new Date(parseInt(room.Appointments[0].Start, 10));
+  const end = new Date(parseInt(room.Appointments[0].End, 10));
+  return (
+    <div id="single-room__meeting-time">
+      {start.getHours() + ':' + (start.getMinutes() <= 9 ? '0' : '') + start.getMinutes()
+      + ' - ' +
+      end.getHours() + ':' + (end.getMinutes() <= 9 ? '0' : '') + end.getMinutes()}
+    </div>
+  );
+};
 
 const Organizer = ({room, details}) => {
   return(
@@ -210,7 +208,6 @@ function ButtonControl(props){
   let room = props.room;
   let showPopup = props.showPopup;
   let details = props.details;
-  var moment = require('moment');
   if (room.Busy){
     let currentAppointment = room.Appointments[0];
     let currentAppointmentEnd = new Date(parseInt(currentAppointment.End, 10));

@@ -10,6 +10,8 @@ Calendars.Read
 	
 Place.Read.All
 
+grant admin consent for both 
+
 for next dev step -> add booking on site, write permission somewhere will be needed, probably ...
 
 
