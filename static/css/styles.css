@@ -192,8 +192,16 @@ body {
         height: 45%;
         display: flex;
         justify-content: center;
-        align-items: center; 
-	width: 590px; }
+        align-items: center;
+        width: 590px; }
+        #single-room__wrap .full-height .left-col #single-room__room-status.status-len-xs {
+          font-size: 15vw; }
+        #single-room__wrap .full-height .left-col #single-room__room-status.status-len-sm {
+          font-size: 9vw; }
+        #single-room__wrap .full-height .left-col #single-room__room-status.status-len-md {
+          font-size: 6vw; }
+        #single-room__wrap .full-height .left-col #single-room__room-status.status-len-lg {
+          font-size: 3.5vw; }
       #single-room__wrap .full-height .left-col #single-room__room-status-open {
         text-transform: uppercase;
         font-size: 20vw;
