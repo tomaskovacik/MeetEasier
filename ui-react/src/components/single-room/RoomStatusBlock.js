@@ -468,6 +468,7 @@ function ButtonControl(props){
 
 const RoomStatusBlock = ({ config, details, room, togglePopup, showPopup }) => (
   <div className={room.Busy ? 'left-col busy' : 'left-col open'}>
+    <img src="../img/logo.png" id="single-room__org-logo__img" />
     <div id="single-room__room-name">{room.Name}</div>
     <div id={room.Busy ? 'single-room__room-status' : 'single-room__room-status-open'}>
 	{room.Busy ? room.Appointments[0].Subject /*config.statusBusy*/ : config.statusAvailable}

@@ -23,9 +23,9 @@ module.exports = {
 				? process.env.OAUTH_CLIENT_SECRET
 				: 'OAUTH_CLIENT_SECRET_NOT_SET'
 		},
-		cache: {
+/*		cache: {
 			cachePlugin
-		},
+		},*/
 		system: {
 			loggerOptions: {
 				// TODO: Better logging / other options?

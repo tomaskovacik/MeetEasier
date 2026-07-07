@@ -240,7 +240,12 @@ body {
       padding: 30px 0 0 30px;
       width: 651px;
       height: 768-30px;
-	
+      
+      #single-room__org-logo__img {
+	float: left;
+	margin-right: 10px;
+	}
+
       #single-room__room-name {
         font-size: 6vw;
       }
@@ -270,7 +275,7 @@ body {
 
       #single-room__room-status{
         text-transform: uppercase;
-        font-size: 10vw;
+        font-size: 3.5vw;
 	margin:0;
 	padding:0;
         font-weight: lighter;
@@ -281,6 +286,7 @@ body {
 	display: flex;
   justify-content: center;
   align-items: center;
+  width: 590px;
       }
 
       #single-room__room-status-open{
