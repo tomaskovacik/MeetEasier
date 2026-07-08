@@ -22,7 +22,6 @@ COPY server.js ./
 COPY app ./app
 COPY config ./config
 COPY static ./static
-COPY .env.template ./
 
 RUN mkdir -p /app/data
 

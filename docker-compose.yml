@@ -1,0 +1,9 @@
+services:
+  meeteasier:
+    build: .
+    image: meeteasier:local
+    ports:
+      - "${PORT:-8080}:8080"
+    env_file:
+      - .env
+    restart: unless-stopped
