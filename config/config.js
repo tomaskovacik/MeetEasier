@@ -43,7 +43,7 @@ module.exports = {
 
 	// Search-settings to use when retrieving data from the calendars
 	calendarSearch: {
-		useGraphAPI: process.env.SEARCH_USE_GRAPHAPI ? process.env.SEARCH_USE_GRAPHAPI : true,
+		useGraphAPI: process.env.SEARCH_USE_GRAPHAPI ? process.env.SEARCH_USE_GRAPHAPI : 'true',
 		maxDays: process.env.SEARCH_MAXDAYS ? process.env.SEARCH_MAXDAYS : 10,
 		maxRoomLists: process.env.SEARCH_MAXROOMLISTS ? process.env.SEARCH_MAXROOMLISTS : 10,
 		maxRooms: process.env.SEARCH_MAXROOMS ? process.env.SEARCH_MAXROOMS : 10,
