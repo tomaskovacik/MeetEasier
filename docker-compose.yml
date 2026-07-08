@@ -3,7 +3,13 @@ services:
     build: .
     image: meeteasier:local
     ports:
-      - "${PORT:-8080}:8080"
+      - "${HOST_PORT:-8080}:8080"
     env_file:
       - .env
+    environment:
+      # Fixed internal port: the app must always listen on the same port
+      # the container exposes, regardless of any PORT set in .env (which
+      # may target a different value for non-Docker/bare-metal use).
+      # Change the host-facing port via HOST_PORT instead.
+      - PORT=8080
     restart: unless-stopped
