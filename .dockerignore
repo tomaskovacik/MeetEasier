@@ -1,0 +1,10 @@
+node_modules
+ui-react/node_modules
+ui-react/build
+.git
+.sass-cache
+data/*.json
+.env
+mockups
+/*.png
+.claude
