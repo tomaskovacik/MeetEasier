@@ -76,9 +76,12 @@ class FFButton extends React.Component {
     }
     else if (this.props.BtnFunc == "BookNow"){
 	header = <button type="button" class="btn-header" disabled={showPopup}>Book Now:</button>
-      contentDropdown = this.props.DropdownContent.map((number) =>
+      contentDropdown = <div>
+      {this.props.DropdownContent.map((number) =>
       <button type="button" class="btn BookNow btn-drop" disabled={showPopup} onClick={(e) => {BookNow(number, room, this.props.togglePopup);this.setVisible()}}>{number} Minutes</button>
-      );
+      )}
+      <button type="button" class="btn Cancel btn-drop" disabled={showPopup} onClick={(e) => {this.setVisible()}}>Cancel</button>
+      </div>
     }
 	else if (this.props.BtnFunc == "BookAfterNext"){
 	header = <button type="button" class="btn-header" disabled={showPopup}>Book after next:</button>
