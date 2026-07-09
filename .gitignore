@@ -3,6 +3,8 @@
 /node_modules/
 /iisnode/
 /config/ews.js
+/data/cache.json
+/data/rooms-cache.json
 tree.txt
 _OLD_TODO.md
 
