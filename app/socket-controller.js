@@ -1,6 +1,7 @@
 const msal = require('@azure/msal-node');
 const config = require('../config/config');
 const roomsCache = require('./roomsCache');
+const getRooms = require('./msgraph/rooms.js');
 
 const msalClient = new msal.ConfidentialClientApplication(config.msalConfig);
 
@@ -18,14 +19,7 @@ module.exports = function(io) {
 
 		if (!isRunning) {
 			(function callAPI() {
-				let api;
-				if (config.calendarSearch.useGraphAPI === 'true') {
-					api = require('./msgraph/rooms.js');
-				} else {
-					api = require('./ews/rooms.js');
-				}
-
-				api(function(err, result) {
+				getRooms(function(err, result) {
 					if (result) {
 						if (err) {
 							console.log(err);

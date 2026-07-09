@@ -1,6 +1,5 @@
 const graph = require('@microsoft/microsoft-graph-client');
 const config = require('../../config/config');
-const moment = require('moment');
 require('isomorphic-fetch');
 
 // TODO: Move this somewhere else?

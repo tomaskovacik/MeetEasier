@@ -1,6 +1,9 @@
 const msal = require('@azure/msal-node');
 const config = require('../config/config');
 const roomsCache = require('./roomsCache');
+const getRooms = require('./msgraph/rooms.js');
+const getRoomLists = require('./msgraph/roomlists.js');
+const bookRoom = require('./msgraph/roombooking.js');
 
 const msalClient = new msal.ConfidentialClientApplication(config.msalConfig);
 
@@ -10,14 +13,7 @@ module.exports = function (app) {
   // api routes ================================================================
   // returns an array of room objects
   app.get('/api/rooms', function (req, res) {
-    let api;
-    if (config.calendarSearch.useGraphAPI === 'true') {
-      api = require('./msgraph/rooms.js');
-    } else {
-      api = require('./ews/rooms.js');
-    }
-
-    api(function (err, rooms) {
+    getRooms(function (err, rooms) {
       if (err) {
         console.log(err);
         const cached = roomsCache.load();
@@ -26,16 +22,9 @@ module.exports = function (app) {
           return;
         }
 
-        if (err.responseCode === 127) {
-          res.json({
-            error:
-              'Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.'
-          });
-        } else {
-          res.json({
-            error: 'Hmm, there seems to be a weird issue occuring.'
-          });
-        }
+        res.json({
+          error: 'Hmm, there seems to be a weird issue occuring.'
+        });
       } else {
         res.json(rooms);
       }
@@ -44,25 +33,11 @@ module.exports = function (app) {
 
   // returns an array of roomlist objects
   app.get('/api/roomlists', function (req, res) {
-    let api;
-    if (config.calendarSearch.useGraphAPI === 'true') {
-      api = require('./msgraph/roomlists.js');
-    } else {
-      api = require('./ews/roomlists.js');
-    }
-
-    api(function (err, roomlists) {
+    getRoomLists(function (err, roomlists) {
       if (err) {
-        if (err.responseCode === 127) {
-          res.json({
-            error:
-              'Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.'
-          });
-        } else {
-          res.json({
-            error: 'Hmm, there seems to be a weird issue occuring.'
-          });
-        }
+        res.json({
+          error: 'Hmm, there seems to be a weird issue occuring.'
+        });
       } else {
         res.json(roomlists);
       }
@@ -71,13 +46,6 @@ module.exports = function (app) {
 
   // books a room
   app.get('/api/roombooking', function (req, res) {
-    let api;
-    if (config.calendarSearch.useGraphAPI === 'true') {
-      api = require('./msgraph/roombooking.js');
-    } else {
-      api = require('./ews/roombooking.js');
-    }
-
     console.log("Route Room Booking");
 
     var roomEmail = req.query.roomEmail;
@@ -86,18 +54,11 @@ module.exports = function (app) {
     var endTime = req.query.endTime;
     var bookingType = req.query.bookingType;
 
-    api(function (err) {
+    bookRoom(function (err) {
       if (err) {
-        if (err.responseCode === 127) {
-          res.json({
-            error:
-              'Oops, there seems to be an issue with the credentials you have supplied.  Make sure you typed them correctly and that you have access to Exchange Roomlists.'
-          });
-        } else {
-          res.json({
-            error: 'Hmm, there seems to be a weird issue occuring.'
-          });
-        }
+        res.json({
+          error: 'Hmm, there seems to be a weird issue occuring.'
+        });
       } else {
         res.json({
           success: 'Room booked successfully!'
