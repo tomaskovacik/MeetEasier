@@ -5,6 +5,16 @@ import FlightboardRow from './FlightboardRow';
 import Socket from '../global/Socket';
 import Spinner from '../global/Spinner';
 
+// Guarantee every room has an Appointments array, regardless of what the
+// server sends - FlightboardRow assumes it's always present.
+function sanitizeRooms(rooms) {
+  if (!Array.isArray(rooms)) return rooms;
+  return rooms.map((room) => ({
+    ...room,
+    Appointments: Array.isArray(room.Appointments) ? room.Appointments : []
+  }));
+}
+
 class Flightboard extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +36,7 @@ class Flightboard extends Component {
           this.setState({
             response: true,
             error: false,
-            rooms: data
+            rooms: sanitizeRooms(data)
           });
         }
         else {
@@ -43,7 +53,7 @@ class Flightboard extends Component {
     this.setState({
       response: socketResponse.response,
       now: socketResponse.now,
-      rooms: socketResponse.rooms
+      rooms: sanitizeRooms(socketResponse.rooms)
     });
   }
 

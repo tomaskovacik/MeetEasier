@@ -8,6 +8,16 @@ import Socket from '../global/Socket';
 import Spinner from '../global/Spinner';
 import Popup from './Popup';
 
+// Guarantee every room has an Appointments array, regardless of what the
+// server sends - RoomStatusBlock/Sidebar both assume it's always present.
+function sanitizeRooms(rooms) {
+  if (!Array.isArray(rooms)) return [];
+  return rooms.map((room) => ({
+    ...room,
+    Appointments: Array.isArray(room.Appointments) ? room.Appointments : []
+  }));
+}
+
 class ErrorHandler extends React.Component {
   constructor(props) {
     super(props)
@@ -68,7 +78,7 @@ class Display extends Component {
           return;
         }
         this.setState({
-          rooms: data
+          rooms: sanitizeRooms(data)
         }, () => this.processRoomDetails());
       })
   }
@@ -136,9 +146,13 @@ class Display extends Component {
   }
 
   handleSocket = (socketResponse) => {
+    // response is intentionally not set here - processRoomDetails() sets
+    // it atomically together with `room` once the matched room is found,
+    // avoiding a render where response is already true but room is still
+    // the constructor's placeholder ([]), which crashed RoomStatusBlock/
+    // Sidebar (both assume room is a real room object once response=true).
     this.setState({
-      response: socketResponse.response,
-      rooms: socketResponse.rooms
+      rooms: sanitizeRooms(socketResponse.rooms)
     }, () => this.processRoomDetails());
   }
 
