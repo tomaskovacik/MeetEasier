@@ -1,5 +1,6 @@
 const msal = require('@azure/msal-node');
 const config = require('../config/config');
+const roomsCache = require('./roomsCache');
 
 const msalClient = new msal.ConfidentialClientApplication(config.msalConfig);
 
@@ -18,6 +19,13 @@ module.exports = function (app) {
 
     api(function (err, rooms) {
       if (err) {
+        console.log(err);
+        const cached = roomsCache.load();
+        if (cached) {
+          res.json(roomsCache.refreshFromCache(cached));
+          return;
+        }
+
         if (err.responseCode === 127) {
           res.json({
             error:

@@ -61,6 +61,12 @@ class Display extends Component {
     return fetch('/api/rooms')
       .then((response) => response.json())
       .then((data) => {
+        if (!Array.isArray(data)) {
+          // no live data and no cache to fall back to yet; wait for the
+          // socket connection to deliver data once it's available
+          console.log(data);
+          return;
+        }
         this.setState({
           rooms: data
         }, () => this.processRoomDetails());
