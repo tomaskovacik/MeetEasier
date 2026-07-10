@@ -439,6 +439,24 @@ body {
             color: $SingleRoomRightDateColor;
           }
         }
+
+        #single-room__device-status {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.2vw;
+          color: $SingleRoomRightDateColor;
+
+          span {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 8px;
+
+            svg {
+              margin-right: 4px;
+            }
+          }
+        }
       }
 
       #upcoming-title {

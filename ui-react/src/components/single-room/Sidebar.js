@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Clock from './Clock';
+import DeviceStatus from './DeviceStatus';
   let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 let kolko = 0;
 const Sidebar = ({ config, details, room }) => (
   <div className="columns small-4 right-col">
     <div id="single-room__clock-wrap">
       <Clock />
+      <DeviceStatus />
     </div>
     <div id="upcoming-title">
       {config.upcomingTitle}
