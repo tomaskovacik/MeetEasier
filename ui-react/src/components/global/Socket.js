@@ -13,6 +13,10 @@ class Socket extends Component {
         rooms: rooms
       });
     });
+
+    socket.on('dataSource', (dataSource) => {
+      if (this.props.onDataSource) this.props.onDataSource(dataSource);
+    });
   }
 
   componentWillUnmount = () => {
@@ -26,7 +30,8 @@ class Socket extends Component {
 }
 
 Socket.propTypes = {
-  response: PropTypes.func
+  response: PropTypes.func,
+  onDataSource: PropTypes.func
 }
 
 export default Socket;

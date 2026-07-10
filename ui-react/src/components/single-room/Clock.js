@@ -1,46 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 var mL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-class Clock extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: new Date()
-    }
-
-    this.tick = this.tick.bind(this);
-  }
-
-  tick() {
-    this.setState ({
-      date: new Date()
-    });
-  }
-
-  componentDidMount = () => {
-    this.tick();
-    this.timerID = setInterval(this.tick, 60000);
-  }
-
-  componentWillUnmount = () => {
-    clearInterval(this.timerID);
-  }
-
-  render() {
-    return (
-      <div id="single-room__clock">
-        <div id="single-room__time">
-          {
-//		  this.state.date.toLocaleTimeString('sk-SK',{hour: '2-digit', minute: '2-digit'})
-	  }
-        </div>
-        <div id="single-room__date">
-	    {this.state.date.getDate() + ' ' + mL[this.state.date.getMonth()]}
-        </div>
+// The date only ever changes at midnight, and the Joan devices are asleep
+// at midnight (per their sleep schedule), so a fresh render after each
+// wake-up always shows the correct date - no interval/re-render needed
+// during the day at all.
+const Clock = () => {
+  const date = new Date();
+  return (
+    <div id="single-room__clock">
+      <div id="single-room__time"></div>
+      <div id="single-room__date">
+        {date.getDate() + ' ' + mL[date.getMonth()]}
       </div>
-
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Clock;

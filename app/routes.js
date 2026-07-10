@@ -18,6 +18,7 @@ module.exports = function (app) {
         console.log(err);
         const cached = roomsCache.load();
         if (cached) {
+          res.set('X-Rooms-Source', 'cache');
           res.json(roomsCache.refreshFromCache(cached));
           return;
         }
@@ -26,6 +27,9 @@ module.exports = function (app) {
           error: 'Hmm, there seems to be a weird issue occuring.'
         });
       } else {
+        const hadPartialFailure = rooms.some((room) => room.ErrorMessage);
+        rooms = roomsCache.mergeWithCache(rooms, roomsCache.load());
+        res.set('X-Rooms-Source', hadPartialFailure ? 'cache' : 'live');
         res.json(rooms);
       }
     }, msalClient);

@@ -330,7 +330,7 @@ function ButtonControl(props){
         let DropdownContent = [15, 30, 60, 120];
         return (
         <div id="menu">
-          <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+          <FFButton ButtonTitle={props.offline ? "Book Now (offline)" : "Book Now"} DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
       }
@@ -338,7 +338,7 @@ function ButtonControl(props){
         let DropdownContent = [15, 30, 60, 90];
         return (
         <div id="menu">
-          <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+          <FFButton ButtonTitle={props.offline ? "Book Now (offline)" : "Book Now"} DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
       }
@@ -346,7 +346,7 @@ function ButtonControl(props){
         let DropdownContent = [15, 30, 45, 60];
         return (
         <div id="menu">
-          <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+          <FFButton ButtonTitle={props.offline ? "Book Now (offline)" : "Book Now"} DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
       }
@@ -354,7 +354,7 @@ function ButtonControl(props){
         let DropdownContent = [15, 30, 45];
         return (
         <div id="menu">
-          <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+          <FFButton ButtonTitle={props.offline ? "Book Now (offline)" : "Book Now"} DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
       }
@@ -362,7 +362,7 @@ function ButtonControl(props){
         let DropdownContent = [15, 30];
         return (
         <div id="menu">
-          <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+          <FFButton ButtonTitle={props.offline ? "Book Now (offline)" : "Book Now"} DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
       }
@@ -370,7 +370,7 @@ function ButtonControl(props){
         let DropdownContent = [15, timeDifference];
         return (
         <div id="menu">
-          <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+          <FFButton ButtonTitle={props.offline ? "Book Now (offline)" : "Book Now"} DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
       }
@@ -378,7 +378,7 @@ function ButtonControl(props){
         let DropdownContent = [timeDifference];
         return (
         <div id="menu">
-          <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+          <FFButton ButtonTitle={props.offline ? "Book Now (offline)" : "Book Now"} DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
         </div>
         );
       }
@@ -459,7 +459,7 @@ function ButtonControl(props){
     let DropdownContent = [15, 30, 60, 120];
       return (
       <div id="menu">
-        <FFButton ButtonTitle="Book Now" DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
+        <FFButton ButtonTitle={props.offline ? "Book Now (offline)" : "Book Now"} DropdownContent={DropdownContent} BtnFunc="BookNow" room={room} togglePopup={props.togglePopup} showPopup={props.showPopup}/>
       </div>
       );
     }
@@ -474,7 +474,7 @@ function getStatusLengthClass(text) {
   return 'status-len-lg';
 }
 
-const RoomStatusBlock = ({ config, details, room, togglePopup, showPopup }) => (
+const RoomStatusBlock = ({ config, details, room, togglePopup, showPopup, offline }) => (
   <div className={room.Busy ? 'left-col busy' : 'left-col open'}>
     <img src="../img/logo.png" id="single-room__org-logo__img" />
     <div id="single-room__room-name">{room.Name}</div>
@@ -484,7 +484,7 @@ const RoomStatusBlock = ({ config, details, room, togglePopup, showPopup }) => (
 	<Details room={room} details={details} />
 	<Organizer room={room} details={details} />
 	<Time room={room} details={details} />
-	<ButtonControl room={room} details={details} togglePopup={togglePopup} showPopup={showPopup}/>
+	<ButtonControl room={room} details={details} togglePopup={togglePopup} showPopup={showPopup} offline={offline}/>
   </div>
 
 );
@@ -494,7 +494,8 @@ RoomStatusBlock.propTypes = {
   details: PropTypes.object,
   config: PropTypes.object,
   togglePopup: PropTypes.func,
-  showPopup: PropTypes.bool
+  showPopup: PropTypes.bool,
+  offline: PropTypes.bool
 }
 
 export default RoomStatusBlock;

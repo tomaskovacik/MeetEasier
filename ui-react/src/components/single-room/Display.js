@@ -54,6 +54,9 @@ class Display extends Component {
       roomAlias: this.props.alias,
       rooms: [],
       room: [],
+      // Starts true (conservative default) until either the REST fetch or
+      // the socket confirms we have a fully live, current data source.
+      offline: true,
       roomDetails: {
         appointmentExists: false,
         timesPresent: false,
@@ -69,7 +72,10 @@ class Display extends Component {
   }
   getRoomsData = () => {
     return fetch('/api/rooms')
-      .then((response) => response.json())
+      .then((response) => {
+        this.setState({ offline: response.headers.get('X-Rooms-Source') === 'cache' });
+        return response.json();
+      })
       .then((data) => {
         if (!Array.isArray(data)) {
           // no live data and no cache to fall back to yet; wait for the
@@ -81,6 +87,10 @@ class Display extends Component {
           rooms: sanitizeRooms(data)
         }, () => this.processRoomDetails());
       })
+  }
+
+  handleDataSource = (dataSource) => {
+    this.setState({ offline: dataSource.offline });
   }
 
   processRoomDetails = () => {
@@ -161,17 +171,17 @@ class Display extends Component {
   }
 
   render() {
-    const { response, room, roomDetails } = this.state;
+    const { response, room, roomDetails, offline } = this.state;
 
     return (
       <ErrorHandler>
       <div>
-        <Socket response={this.handleSocket}/>
+        <Socket response={this.handleSocket} onDataSource={this.handleDataSource}/>
 
         { response ?
           <div className="row expanded full-height">
             {this.state.showPopup ? <Popup text={this.state.popupText} /> : null}
-            <RoomStatusBlock room={room} details={roomDetails} config={config} togglePopup = {this.togglePopup.bind(this)} showPopup = {this.state.showPopup} />
+            <RoomStatusBlock room={room} details={roomDetails} config={config} togglePopup = {this.togglePopup.bind(this)} showPopup = {this.state.showPopup} offline={offline} />
             <Sidebar room={room} details={roomDetails} config={config} />
           </div>
         :
