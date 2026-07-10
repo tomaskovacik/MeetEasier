@@ -18,6 +18,32 @@ function sanitizeRooms(rooms) {
   }));
 }
 
+// Next Date instance of the given "HH:MM" time, today if it hasn't passed
+// yet, otherwise tomorrow.
+function nextOccurrence(now, hhmm) {
+  const [hours, minutes] = hhmm.split(':').map(Number);
+  const next = new Date(now);
+  next.setHours(hours, minutes, 0, 0);
+  if (next <= now) next.setDate(next.getDate() + 1);
+  return next;
+}
+
+// sleepStart/sleepEnd are "HH:MM"; the window wraps past midnight
+// (e.g. 17:59 -> 07:01), which is the expected/normal case here.
+function isSleeping(now, sleepStart, sleepEnd) {
+  const toMinutes = (hhmm) => {
+    const [hours, minutes] = hhmm.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  const startMinutes = toMinutes(sleepStart);
+  const endMinutes = toMinutes(sleepEnd);
+  if (startMinutes > endMinutes) {
+    return nowMinutes >= startMinutes || nowMinutes < endMinutes;
+  }
+  return nowMinutes >= startMinutes && nowMinutes < endMinutes;
+}
+
 class ErrorHandler extends React.Component {
   constructor(props) {
     super(props)
@@ -57,6 +83,7 @@ class Display extends Component {
       // Starts true (conservative default) until either the REST fetch or
       // the socket confirms we have a fully live, current data source.
       offline: true,
+      sleeping: false,
       roomDetails: {
         appointmentExists: false,
         timesPresent: false,
@@ -91,6 +118,29 @@ class Display extends Component {
 
   handleDataSource = (dataSource) => {
     this.setState({ offline: dataSource.offline });
+  }
+
+  scheduleSleepTransitions = () => {
+    const { sleepStart, sleepEnd } = this.state;
+    const now = new Date();
+    const sleeping = isSleeping(now, sleepStart, sleepEnd);
+    this.setState({ sleeping });
+
+    // A single precise timer for the next boundary, instead of polling -
+    // exactly one transition (and one re-render) at each sleep/wake edge.
+    const nextTransition = nextOccurrence(now, sleeping ? sleepEnd : sleepStart);
+    this.sleepTimerID = setTimeout(this.scheduleSleepTransitions, nextTransition - now);
+  }
+
+  fetchSleepConfig = () => {
+    return fetch('/api/config')
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          sleepStart: data.sleepStart,
+          sleepEnd: data.sleepEnd
+        }, () => this.scheduleSleepTransitions());
+      })
   }
 
   processRoomDetails = () => {
@@ -168,17 +218,28 @@ class Display extends Component {
 
   componentDidMount = () => {
     this.getRoomsData();
+    this.fetchSleepConfig();
+  }
+
+  componentWillUnmount = () => {
+    clearTimeout(this.sleepTimerID);
   }
 
   render() {
-    const { response, room, roomDetails, offline } = this.state;
+    const { response, room, roomDetails, offline, sleeping } = this.state;
 
     return (
       <ErrorHandler>
       <div>
+        {/* kept mounted while sleeping too, so data/cache stay warm and
+            the display is current the moment it wakes back up */}
         <Socket response={this.handleSocket} onDataSource={this.handleDataSource}/>
 
-        { response ?
+        { sleeping ?
+          <div id="single-room__sleeping">
+            <img src="../img/cat_sleeping.svg" alt="" />
+          </div>
+        : response ?
           <div className="row expanded full-height">
             {this.state.showPopup ? <Popup text={this.state.popupText} /> : null}
             <RoomStatusBlock room={room} details={roomDetails} config={config} togglePopup = {this.togglePopup.bind(this)} showPopup = {this.state.showPopup} offline={offline} />

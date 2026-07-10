@@ -45,5 +45,12 @@ module.exports = {
 		maxRoomLists: envVar('SEARCH_MAXROOMLISTS', 10),
 		maxRooms: envVar('SEARCH_MAXROOMS', 10),
 		maxItems: envVar('SEARCH_MAXITEMS', 6)
+	},
+	// Joan devices are put to sleep by the device itself on a schedule;
+	// these just control when the single-room display switches to/from
+	// the sleeping screen. 24h "HH:MM" format.
+	sleep: {
+		start: envVar('SLEEP_START_TIME', '17:59'),
+		end: envVar('SLEEP_END_TIME', '07:01')
 	}
 };

@@ -78,6 +78,11 @@ module.exports = function (app) {
     res.json({ status: 'OK' });
   });
 
+  // client-facing config (e.g. sleep window for the single-room display)
+  app.get('/api/config', function (req, res) {
+    res.json({ sleepStart: config.sleep.start, sleepEnd: config.sleep.end });
+  });
+
   // redirects everything else to our react app
   app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '../ui-react/build/', 'index.html'));

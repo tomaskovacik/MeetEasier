@@ -149,6 +149,16 @@ body {
 #single-room__wrap {
   height: 100vh;
   width: 100%; }
+  #single-room__wrap #single-room__sleeping {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white; }
+    #single-room__wrap #single-room__sleeping img {
+      max-width: 90%;
+      max-height: 90%; }
   #single-room__wrap .full-height {
     height: 100vh;
     width: 100%; }
