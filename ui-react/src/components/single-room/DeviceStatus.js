@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 // Battery/WiFi status only exists inside a real Visionect VSS render
-// session (window.okular), never in a plain browser (local dev, our own
-// tests) - so this is always inert there, not a bug.
+// session (window.okular) - resolves to null everywhere else (local dev,
+// our own tests, plain browsers), and the caller falls back to a zeroed
+// default in that case.
 function readDeviceStatus() {
   if (typeof window === 'undefined' || !window.okular || typeof window.okular.DevicesStatus !== 'function') {
     return Promise.resolve(null);
@@ -23,7 +24,7 @@ const BatteryIcon = ({ percent, charging }) => {
   const level = Math.max(0, Math.min(100, percent));
   const fillWidth = (level / 100) * 20;
   return (
-    <svg width="17" height="9" viewBox="0 0 26 14">
+    <svg className="single-room__battery-icon" viewBox="0 0 26 14">
       <rect x="1" y="1" width="22" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
       <rect x="24" y="4.5" width="2" height="5" fill="currentColor" />
       <rect x="3" y="3" width={fillWidth} height="8" fill="currentColor" />
@@ -40,7 +41,7 @@ const SignalIcon = ({ percent }) => {
   const barWidth = 4, gap = 2, maxHeight = 14;
   const width = bars * barWidth + (bars - 1) * gap;
   return (
-    <svg width={width * 0.65} height={maxHeight * 0.65} viewBox={`0 0 ${width} ${maxHeight}`}>
+    <svg className="single-room__signal-icon" viewBox={`0 0 ${width} ${maxHeight}`}>
       {Array.from({ length: bars }).map((_, i) => {
         const h = ((i + 1) / bars) * maxHeight;
         return (
@@ -58,14 +59,20 @@ const SignalIcon = ({ percent }) => {
   );
 };
 
+// Shown until real data arrives (or forever, outside a real VSS session) -
+// this branch only ever runs on the Joan hardware, so defaulting to a
+// visible zeroed-out icon rather than hiding is deliberate: it makes
+// layout/sizing easy to check anywhere, not just on-device.
+const DEFAULT_STATUS = { Battery: 0, RSSI: 0, Charger: 0 };
+
 class DeviceStatus extends Component {
   constructor(props) {
     super(props);
-    this.state = { status: null };
+    this.state = { status: DEFAULT_STATUS };
   }
 
   check = () => {
-    readDeviceStatus().then((status) => this.setState({ status }));
+    readDeviceStatus().then((status) => this.setState({ status: status || DEFAULT_STATUS }));
     this.timerID = setTimeout(this.check, POLL_INTERVAL_MS);
   }
 
@@ -79,7 +86,6 @@ class DeviceStatus extends Component {
 
   render() {
     const { status } = this.state;
-    if (!status) return null;
 
     const battery = status.Battery;
     // RSSI here is Visionect's own positive signal-quality value (0-100ish),
@@ -93,13 +99,11 @@ class DeviceStatus extends Component {
         {typeof battery === 'number' &&
           <span id="single-room__battery">
             <BatteryIcon percent={battery} charging={charging} />
-            {battery}%
           </span>
         }
         {typeof signal === 'number' &&
           <span id="single-room__signal">
             <SignalIcon percent={signal} />
-            {signal}%
           </span>
         }
       </div>

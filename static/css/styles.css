@@ -305,18 +305,26 @@ body {
           #single-room__wrap .full-height .right-col #single-room__clock-wrap #single-room__clock #single-room__date {
             font-size: 6vw;
             color: black; }
-        #single-room__wrap .full-height .right-col #single-room__clock-wrap #single-room__device-status {
-          display: flex;
+      #single-room__wrap .full-height .right-col #single-room__device-status {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        display: flex;
+        align-items: center;
+        color: black; }
+        #single-room__wrap .full-height .right-col #single-room__device-status span {
+          display: inline-flex;
           align-items: center;
-          justify-content: center;
-          font-size: 0.8vw;
-          color: black; }
-          #single-room__wrap .full-height .right-col #single-room__clock-wrap #single-room__device-status span {
-            display: inline-flex;
-            align-items: center;
-            margin: 0 6px; }
-            #single-room__wrap .full-height .right-col #single-room__clock-wrap #single-room__device-status span svg {
-              margin-right: 3px; }
+          margin-left: 8px; }
+          #single-room__wrap .full-height .right-col #single-room__device-status span svg {
+            margin: 7px;
+            flex-shrink: 0; }
+          #single-room__wrap .full-height .right-col #single-room__device-status span .single-room__battery-icon {
+            width: 34px;
+            height: 18px; }
+          #single-room__wrap .full-height .right-col #single-room__device-status span .single-room__signal-icon {
+            width: 28px;
+            height: 18px; }
       #single-room__wrap .full-height .right-col #upcoming-title {
         font-size: 2.5vw;
         text-transform: uppercase;

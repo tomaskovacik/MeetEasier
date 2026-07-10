@@ -7,9 +7,9 @@ import DeviceStatus from './DeviceStatus';
 let kolko = 0;
 const Sidebar = ({ config, details, room }) => (
   <div className="columns small-4 right-col">
+    <DeviceStatus />
     <div id="single-room__clock-wrap">
       <Clock />
-      <DeviceStatus />
     </div>
     <div id="upcoming-title">
       {config.upcomingTitle}
