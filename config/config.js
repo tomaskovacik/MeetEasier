@@ -48,7 +48,8 @@ module.exports = {
 	},
 	// Joan devices are put to sleep by the device itself on a schedule;
 	// these just control when the single-room display switches to/from
-	// the sleeping screen. 24h "HH:MM" format.
+	// the sleeping screen. 24h "HH:MM" format. Set start === end to
+	// disable the sleeping screen entirely.
 	sleep: {
 		start: envVar('SLEEP_START_TIME', '17:59'),
 		end: envVar('SLEEP_END_TIME', '07:01')
