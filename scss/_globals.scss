@@ -444,16 +444,16 @@ body {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 1.2vw;
+          font-size: 0.8vw;
           color: $SingleRoomRightDateColor;
 
           span {
             display: inline-flex;
             align-items: center;
-            margin: 0 8px;
+            margin: 0 6px;
 
             svg {
-              margin-right: 4px;
+              margin-right: 3px;
             }
           }
         }

@@ -23,7 +23,7 @@ const BatteryIcon = ({ percent, charging }) => {
   const level = Math.max(0, Math.min(100, percent));
   const fillWidth = (level / 100) * 20;
   return (
-    <svg width="26" height="14" viewBox="0 0 26 14">
+    <svg width="17" height="9" viewBox="0 0 26 14">
       <rect x="1" y="1" width="22" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
       <rect x="24" y="4.5" width="2" height="5" fill="currentColor" />
       <rect x="3" y="3" width={fillWidth} height="8" fill="currentColor" />
@@ -40,7 +40,7 @@ const SignalIcon = ({ percent }) => {
   const barWidth = 4, gap = 2, maxHeight = 14;
   const width = bars * barWidth + (bars - 1) * gap;
   return (
-    <svg width={width} height={maxHeight} viewBox={`0 0 ${width} ${maxHeight}`}>
+    <svg width={width * 0.65} height={maxHeight * 0.65} viewBox={`0 0 ${width} ${maxHeight}`}>
       {Array.from({ length: bars }).map((_, i) => {
         const h = ((i + 1) / bars) * maxHeight;
         return (
