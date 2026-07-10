@@ -5,6 +5,11 @@ services:
     build: .
     ports:
       - "${HOST_PORT:-8080}:8080"
+    # Uncomment to override the default logo without rebuilding the image -
+    # static/ is served straight from disk at runtime, so this takes effect
+    # immediately:
+    # volumes:
+    #   - ./my-logo.png:/app/static/img/logo.png:ro
     env_file:
       - .env
     environment:
