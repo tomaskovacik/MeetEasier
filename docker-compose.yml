@@ -1,8 +1,8 @@
 services:
   meeteasier:
-    image: ghcr.io/tomaskovacik/meeteasier:${IMAGE_TAG:-v1.5-bw-joan6}
+    image: ghcr.io/tomaskovacik/meeteasier:${IMAGE_TAG:-v1.6-bw-joan6}
     # Uncomment to build locally instead of pulling the GHCR image above:
-    build: .
+    # build: .
     ports:
       - "${HOST_PORT:-8080}:8080"
     # Uncomment to override the default logo without rebuilding the image -
