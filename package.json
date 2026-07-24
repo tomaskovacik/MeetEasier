@@ -21,7 +21,6 @@
     "grunt-contrib-sass": "2.0.0",
     "grunt-contrib-watch": "1.1.0",
     "isomorphic-fetch": "^3.0.0",
-    "msal-node": "^0.0.1-security",
     "socket.io": "4.6.2"
   }
 }
