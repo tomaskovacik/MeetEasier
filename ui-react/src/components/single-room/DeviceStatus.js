@@ -18,11 +18,26 @@ function readDeviceStatus() {
 
 // Battery/WiFi change slowly - poll rarely to avoid adding to e-ink
 // refresh churn for a value that's almost always unchanged.
-const POLL_INTERVAL_MS = 15 * 60 * 1000;
+const POLL_INTERVAL_MS = 60 * 60 * 1000;
+
+// Rounded to the nearest percent point so near-identical battery readings
+// (e.g. 55 vs 55.4) compare equal - see iconState() below, which uses this
+// same value to decide whether a re-render is needed at all.
+const batteryFillWidth = (percent) => {
+  const level = Math.max(0, Math.min(100, Math.round(percent)));
+  return (level / 100) * 20;
+};
+
+const SIGNAL_BARS = 4;
+
+// Signal is rendered as discrete bars, so this is also the value iconState()
+// compares - many different RSSI readings map to the same bar count and
+// shouldn't cause a re-render.
+const signalFilledBars = (percent) =>
+  Math.max(1, Math.ceil((Math.max(0, Math.min(100, percent)) / 100) * SIGNAL_BARS));
 
 const BatteryIcon = ({ percent, charging }) => {
-  const level = Math.max(0, Math.min(100, percent));
-  const fillWidth = (level / 100) * 20;
+  const fillWidth = batteryFillWidth(percent);
   return (
     <svg className="single-room__battery-icon" viewBox="0 0 26 14">
       <rect x="1" y="1" width="22" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
@@ -36,8 +51,8 @@ const BatteryIcon = ({ percent, charging }) => {
 };
 
 const SignalIcon = ({ percent }) => {
-  const bars = 4;
-  const filledBars = Math.max(1, Math.ceil((Math.max(0, Math.min(100, percent)) / 100) * bars));
+  const filledBars = signalFilledBars(percent);
+  const bars = SIGNAL_BARS;
   const barWidth = 4, gap = 2, maxHeight = 14;
   const width = bars * barWidth + (bars - 1) * gap;
   return (
@@ -65,6 +80,25 @@ const SignalIcon = ({ percent }) => {
 // layout/sizing easy to check anywhere, not just on-device.
 const DEFAULT_STATUS = { Battery: 0, RSSI: 0, Charger: 0 };
 
+// Reduces a raw status to exactly what the icons visually depend on, so a
+// poll that changes Battery/RSSI without changing what's drawn (e.g. 55 -> 56,
+// or an RSSI move that stays within the same signal bar) doesn't trigger a
+// re-render - each render is a write to the e-ink screen, so those are
+// worth avoiding.
+function iconState(status) {
+  const battery = status.Battery;
+  const signal = status.RSSI;
+  return {
+    battery: typeof battery === 'number' ? batteryFillWidth(battery) : null,
+    charging: !!status.Charger,
+    signal: typeof signal === 'number' ? signalFilledBars(signal) : null,
+  };
+}
+
+function iconStateEqual(a, b) {
+  return a.battery === b.battery && a.charging === b.charging && a.signal === b.signal;
+}
+
 class DeviceStatus extends Component {
   constructor(props) {
     super(props);
@@ -82,6 +116,10 @@ class DeviceStatus extends Component {
 
   componentWillUnmount = () => {
     clearTimeout(this.timerID);
+  }
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    return !iconStateEqual(iconState(this.state.status), iconState(nextState.status));
   }
 
   render() {
